@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers.dart/usertype_controller.dart';
+import 'package:house_scout/services/remote_services.dart';
 import 'package:house_scout/utils/constants.dart';
 import 'package:house_scout/utils/defaultButton.dart';
 import 'package:house_scout/utils/defaultText.dart';
@@ -12,6 +13,7 @@ class UserType extends StatelessWidget {
   UserType({super.key});
 
   final controller = Get.put(UserTypeController());
+  var data = Get.arguments;
 
   var container_color = Colors.white;
 
@@ -27,8 +29,8 @@ class UserType extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const DefaultText(
-                  text: "Are you",
+                DefaultText(
+                  text: "${data['username']}, Are you ",
                   color: Constants.primaryColor,
                   size: 30.0,
                 ),
@@ -102,20 +104,40 @@ class UserType extends StatelessWidget {
                   children: [
                     TextButton(
                         onPressed: () {
-                          Get.offNamed('/register');
+                          // Get.offNamed('/register');
+                          Get.back();
                         },
                         child: const DefaultText(
                           text: 'Back',
                           color: Constants.primaryColor,
                           size: 20.0,
                         )),
-                    Obx(() => DefaultButton(
-                          onPressed: () {
-                            Get.offNamed('/login');
+                    Obx(() => TextButton(
+                          onPressed: () async {
+                            controller.btnDisabled.value
+                                ? null
+                                : await RemoteServices.register(
+                                    "${data['username']}",
+                                    "${data['email']}",
+                                    "${data['password']}",
+                                    controller.userType.value);
                           },
-                          text: "Submit",
-                          textSize: 18.0,
-                          color: controller.nextBtnColor.value,
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                controller.nextBtnColor.value),
+                            padding: MaterialStateProperty.all(
+                                const EdgeInsets.all(15.0)),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                            ),
+                          ),
+                          child: const DefaultText(
+                            text: "Submit",
+                            size: 18.0,
+                            color: Colors.white,
+                          ),
                         ))
                   ],
                 )

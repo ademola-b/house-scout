@@ -22,6 +22,8 @@ class Login extends StatelessWidget {
     var isValid = _form.currentState!.validate();
     if (!isValid) return;
     _form.currentState!.save();
+    Get.snackbar("", "Login Successful",
+        backgroundColor: Constants.containerColor);
   }
 
   @override
@@ -116,7 +118,7 @@ class Login extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 InkWell(
-                  onTap: () => Get.offNamed('/register'),
+                  onTap: () => Get.toNamed('/register'),
                   child: RichText(
                       text: const TextSpan(
                           text: "Don't have an account? ",

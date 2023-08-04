@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:house_scout/house_owner/dashboard.dart';
 import 'package:house_scout/login.dart';
 import 'package:house_scout/register.dart';
+import 'package:house_scout/scouter/dashboard.dart';
 import 'package:house_scout/splash.dart';
 import 'package:house_scout/usertype.dart';
 import 'package:house_scout/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+late SharedPreferences sharedPreferences;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  sharedPreferences = await SharedPreferences.getInstance();
+
   runApp(const MyApp());
 }
 
@@ -27,7 +34,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => const SplashScreen()),
         GetPage(name: '/login', page: () => Login()),
         GetPage(name: '/register', page: () => Register()),
-        GetPage(name: '/usertype', page: () => UserType())
+        GetPage(name: '/usertype', page: () => UserType()),
+        GetPage(name: '/houseOwner', page: () => Dashboard()),
+        GetPage(name: '/scouter', page: () => ScouterDashboard()),
       ],
     );
   }

@@ -1,9 +1,10 @@
 import 'dart:convert';
-
-// import 'package:get/get.dart';
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
+import 'package:house_scout/main.dart';
+import 'package:house_scout/models/login_response.dart';
 import 'package:house_scout/models/registration_response.dart';
+import 'package:house_scout/models/user_details_response.dart';
 import 'package:house_scout/services/urls.dart';
 import 'package:house_scout/utils/constants.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +28,7 @@ class RemoteServices {
       );
       if (response.statusCode == 201) {
         Get.showSnackbar(Constants.customSnackBar(
-            message: "Successfully Created", tag: true));
+            message: "Account Successfully Created, Login Now", tag: true));
         Get.offNamed('/login');
       } else {
         var responseData = jsonDecode(response.body);
@@ -63,9 +64,55 @@ class RemoteServices {
       }
     } catch (e) {
       Get.showSnackbar(Constants.customSnackBar(
-          message: "Account Successfully Created, Login Now", tag: true));
+          message: "An error occurred: $e", tag: false));
     }
 
+    return null;
+  }
+
+  static Future<UserDetailsResponse?> userDetails() async {
+    try {
+      http.Response response = await http.get(userurl, headers: {
+        'Authorization': "Token ${sharedPreferences.getString('token')}"
+      });
+      if (response.statusCode == 200) {
+        return userDetailsResponseFromJson(response.body);
+      } else {
+        throw Exception('Failed to get user details');
+      }
+    } catch (e) {
+      Get.showSnackbar(Constants.customSnackBar(
+          message: "An error occurred: $e", tag: false));
+    }
+    return null;
+  }
+
+  static Future<LoginResponse?> login(
+      String? username, String? password) async {
+    try {
+      http.Response response = await http.post(loginUrl,
+          body: {'username': username, 'password': password});
+      var responseData = jsonDecode(response.body);
+      if (responseData != null) {
+        if (responseData['key'] != null) {
+          sharedPreferences.setString('token', responseData['key']);
+          UserDetailsResponse? userDetail = await RemoteServices.userDetails();
+          if (userDetail != null) {
+            if (userDetail.isLandlord) {
+              Get.offAllNamed('/houseOwner');
+            } else {
+              Get.offAllNamed('/scouter');
+            }
+          } else {
+            Get.showSnackbar(Constants.customSnackBar(
+                message: "User not found", tag: false));
+          }
+        }
+      }
+    } catch (e) {
+      Get.showSnackbar(Constants.customSnackBar(
+          message: "An error occurred: $e", tag: false));
+    }
     return null;
   }
 }

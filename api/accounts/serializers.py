@@ -1,22 +1,13 @@
 from allauth.account.adapter import get_adapter
 
 from rest_framework import serializers
+from dj_rest_auth.serializers import UserDetailsSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from . models import CustomUser
 
 class CustomRegisterSerializer(RegisterSerializer):
 
     is_landlord = serializers.BooleanField()
-
-    # class Meta:
-    #     model = CustomUser
-    #     fields = [
-    #         'username',
-    #         'password1',
-    #         'password2', 
-    #         'email',
-    #         'is_landlord'
-    #     ]
 
     def get_cleaned_data(self):
         super(CustomRegisterSerializer, self).get_cleaned_data()
@@ -38,4 +29,15 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save()
         self.custom_signup(request, user)
         return user
+
+class UserDetailsSerializer(UserDetailsSerializer):
+    class Meta(UserDetailsSerializer.Meta):
+        fields = [
+            'pk',
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'is_landlord'
+        ]
 

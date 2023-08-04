@@ -21,8 +21,8 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset("assets/images/logo1.svg",
-                width: 150, height: 150),
+            SvgPicture.asset("assets/images/logo2.svg",
+                width: 120, height: 120),
             const DefaultText(
               text: "House Scout",
               color: Constants.containerColor,

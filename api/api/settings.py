@@ -62,6 +62,10 @@ REST_FRAMEWORK = {
     ]
 }
 
+REST_AUTH = {
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.UserDetailsSerializer'
+}
+
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer'
 }

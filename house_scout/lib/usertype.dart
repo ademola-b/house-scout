@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:house_scout/controllers.dart/usertype_controller.dart';
+import 'package:house_scout/controllers/usertype_controller.dart';
 import 'package:house_scout/services/remote_services.dart';
 import 'package:house_scout/utils/constants.dart';
 import 'package:house_scout/utils/defaultButton.dart';
@@ -56,7 +56,7 @@ class UserType extends StatelessWidget {
                                     "assets/images/home_addr.svg",
                                   ),
                                   const DefaultText(
-                                    text: "Looking for a house",
+                                    text: "looking for a house",
                                     color: Constants.primaryColor,
                                     size: 20.0,
                                     align: TextAlign.center,
@@ -86,7 +86,7 @@ class UserType extends StatelessWidget {
                                     "assets/images/landlord.svg",
                                   ),
                                   const DefaultText(
-                                    text: "House Owner",
+                                    text: "a house Owner",
                                     color: Constants.primaryColor,
                                     size: 20.0,
                                     align: TextAlign.center,

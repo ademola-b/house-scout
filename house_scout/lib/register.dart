@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:house_scout/controllers.dart/login_controller.dart';
+import 'package:house_scout/controllers/login_controller.dart';
 import 'package:house_scout/services/remote_services.dart';
 import 'package:house_scout/utils/constants.dart';
 import 'package:house_scout/utils/defaultButton.dart';
@@ -12,18 +12,20 @@ class Register extends StatelessWidget {
   final controller = Get.put(LoginController());
 
   final _form = GlobalKey<FormState>();
-  late String _username, _email, _password;
+  late final String _username, _email, _password;
   final TextEditingController _pass = TextEditingController();
 
   _register() async {
     var isValid = _form.currentState!.validate();
-    if (!isValid) return;
-    _form.currentState!.save();
+    if (isValid){
+_form.currentState!.save();
     Get.toNamed('/usertype', arguments: {
       'username': _username,
       'email': _email,
       'password': _password
     });
+    }
+    
   }
 
   @override
@@ -53,7 +55,6 @@ class Register extends StatelessWidget {
                             validator: Constants.validator,
                             onSaved: (newValue) => _username = newValue!,
                             keyboardInputType: TextInputType.text,
-                            // maxLines: 1,
                           ),
                           const SizedBox(height: 20),
                           DefaultTextFormField(

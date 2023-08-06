@@ -1,3 +1,4 @@
+from allauth.account.models import EmailAddress
 from django.shortcuts import render
 from dj_rest_auth.registration.views import RegisterView
 from rest_framework import status
@@ -11,5 +12,6 @@ class CustomRegisterView(RegisterView):
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+        user = self.perform_create(serializer)
+        EmailAddress.objects.create(user = user, email=request.data['email'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)

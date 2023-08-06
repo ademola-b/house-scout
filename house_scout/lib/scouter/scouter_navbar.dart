@@ -22,7 +22,7 @@ class ScouterNavBar extends StatelessWidget {
     return Scaffold(
       body: Obx(() => IndexedStack(
             index: controller.currentPage.value,
-            children: const [ScouterDashboard(), Favs(), More()],
+            children: [ScouterDashboard(), Favs(), More()],
           )),
       bottomNavigationBar: Obx(() => CircleNavBar(
             onTap: (index) {

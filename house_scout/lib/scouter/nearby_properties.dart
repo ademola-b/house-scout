@@ -1,27 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers/dashboard_controller.dart';
 import 'package:house_scout/utils/constants.dart';
 import 'package:house_scout/utils/defaultText.dart';
 import 'package:house_scout/utils/defaultTextFormField.dart';
 
-class FilterController extends GetxController {
-  var _selectedIndex = -1.obs;
-}
-
-class ScouterDashboard extends StatelessWidget {
-  ScouterDashboard({super.key});
+class NearbyProperties extends StatelessWidget {
+  NearbyProperties({super.key});
   // var controller = List.generate(4, (index) => Get.put(DashboardController()));
-  var controller = List.generate(4, (index) => DashboardController());
-  var filterController = FilterController();
-
-  final List<Widget> _icons = [
-    const Icon(Icons.filter_alt_outlined, color: Colors.orange),
-    const DefaultText(text: "All", color: Colors.white, size: 18.0),
-    const DefaultText(text: "Rent", color: Colors.white, size: 18.0),
-    const DefaultText(text: "Lease", color: Colors.white, size: 18.0),
-  ];
+  var controller = List.generate(10, (index) => DashboardController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,37 +23,20 @@ class ScouterDashboard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100.0),
-                      border: Border.all(
-                          color: Constants.containerColor, width: 5.0),
-                    ),
-                    child: ClipOval(
-                      child: Image.asset(
-                        "assets/images/default.jpg",
-                        width: 70,
-                        height: 70,
-                        fit: BoxFit.cover,
-                      ),
+                  GestureDetector(
+                    onTap: () => Get.back(),
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.orange,
                     ),
                   ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.chat,
-                        size: 40,
-                        color: Constants.primaryColor,
-                      )),
-                  const SizedBox(width: 20),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.notifications,
-                        size: 40,
-                        color: Constants.primaryColor,
-                      )),
+                  const SizedBox(width: 50.0),
+                  const DefaultText(
+                    text: "Nearby Properties",
+                    size: 20,
+                    color: Colors.orange,
+                    weight: FontWeight.bold,
+                  ),
                 ],
               ),
               const SizedBox(height: 40.0),
@@ -84,59 +54,12 @@ class ScouterDashboard extends StatelessWidget {
                 fontSize: 15,
               ),
               const SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const DefaultText(
-                    text: "Nearby Properties",
-                    size: 18,
-                    weight: FontWeight.bold,
-                  ),
-                  GestureDetector(
-                    onTap: () => Get.toNamed('/nearbyProperties'),
-                    child: const DefaultText(
-                      text: "See More",
-                      size: 15,
-                      color: Colors.orange,
-                      weight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              Wrap(
-                children: List.generate(
-                    4,
-                    (index) => Container(
-                          decoration: const BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(0.0, 1.0),
-                                blurRadius: 10.0)
-                          ]),
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: ChoiceChip(
-                            label: GestureDetector(
-                              child: _icons[index],
-                            ),
-                            backgroundColor: Colors.white,
-                            selectedColor: Colors.orange,
-                            selected: filterController._selectedIndex == index,
-                            onSelected: (bool selected) {
-                              if (selected) {
-                                filterController._selectedIndex = index;
-                                print(filterController._selectedIndex);
-                              }
-                            },
-                          ),
-                        )),
-              ),
-              const SizedBox(height: 20.0),
               Center(
                 child: Wrap(
                     spacing: 20.0,
                     runSpacing: 20.0,
                     children: List.generate(
-                        4,
+                        10,
                         (index) => Container(
                               padding: const EdgeInsets.all(10.0),
                               decoration: BoxDecoration(
@@ -212,25 +135,6 @@ class ScouterDashboard extends StatelessWidget {
                               ),
                             ))),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: SvgPicture.asset(
-                      "assets/images/balcony.svg",
-                      width: 180,
-                      height: 180,
-                    ),
-                  ),
-                  const DefaultText(
-                    text:
-                        "No Nearby Property Availabe for rent/lease at the moment",
-                    size: 18,
-                    color: Colors.orange,
-                    align: TextAlign.center,
-                  ),
-                ],
-              )
             ],
           ),
         ),

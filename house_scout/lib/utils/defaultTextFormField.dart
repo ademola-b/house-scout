@@ -18,6 +18,7 @@ class DefaultTextFormField extends StatefulWidget {
   final Color? fillColor;
   final keyboardInputType;
   final Function()? onTap;
+  final double borderRadius;
 
   const DefaultTextFormField(
       {Key? key,
@@ -32,11 +33,12 @@ class DefaultTextFormField extends StatefulWidget {
       required this.obscureText,
       this.fontSize,
       this.enabled,
-      this.label,
+      this.label = "",
       this.onSaved,
       this.fillColor,
       this.onTap,
-      this.readOnly})
+      this.readOnly,
+      this.borderRadius = 10.0})
       : super(key: key);
 
   @override
@@ -57,15 +59,18 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
       onSaved: widget.onSaved,
       obscureText: widget.obscureText,
       decoration: InputDecoration(
-        border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Constants.primaryColor)),
-        enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Constants.primaryColor)),
-        focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            borderSide: BorderSide(color: Constants.primaryColor)),
+        border: OutlineInputBorder(
+            borderRadius:
+                BorderRadius.all(Radius.circular(widget.borderRadius)),
+            borderSide: const BorderSide(color: Constants.primaryColor)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius:
+                BorderRadius.all(Radius.circular(widget.borderRadius)),
+            borderSide: const BorderSide(color: Constants.primaryColor)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius:
+                BorderRadius.all(Radius.circular(widget.borderRadius)),
+            borderSide: const BorderSide(color: Constants.primaryColor)),
 
         // fillColor: widget.fillColor,
         // filled: true,
@@ -75,7 +80,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
         prefixIcon: Icon(widget.icon),
         prefixIconColor: Constants.primaryColor,
         suffixIcon: widget.suffixIcon,
-        // hintText: widget.hintText,
+        hintText: widget.hintText,
       ),
       style: TextStyle(
         fontFamily: 'Inter',

@@ -121,6 +121,7 @@ class Register extends StatelessWidget {
                                     _register();
                                   },
                                   text: "Register",
+                                  textColor: Colors.white,
                                   textSize: 18.0))
                         ],
                       )),

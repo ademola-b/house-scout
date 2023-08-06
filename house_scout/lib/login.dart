@@ -79,6 +79,7 @@ class Login extends StatelessWidget {
                                     _login();
                                   },
                                   text: "Login",
+                                  textColor: Colors.white,
                                   textSize: 18.0))
                         ],
                       )),

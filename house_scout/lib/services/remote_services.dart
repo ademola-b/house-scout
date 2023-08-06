@@ -90,8 +90,8 @@ class RemoteServices {
   static Future<LoginResponse?> login(
       String? username, String? password) async {
     try {
-      http.Response response = await http.post(loginUrl,
-          body: {'username': username, 'password': password});
+      http.Response response = await http
+          .post(loginUrl, body: {'username': username, 'password': password});
       var responseData = jsonDecode(response.body);
       if (responseData != null) {
         if (responseData['key'] != null) {
@@ -99,9 +99,9 @@ class RemoteServices {
           UserDetailsResponse? userDetail = await RemoteServices.userDetails();
           if (userDetail != null) {
             if (userDetail.isLandlord) {
-              Get.offAllNamed('/houseOwner');
+              Get.offAllNamed('/ownerNavBar');
             } else {
-              Get.offAllNamed('/scouter');
+              Get.offAllNamed('/scouterNavBar');
             }
           } else {
             Get.showSnackbar(Constants.customSnackBar(

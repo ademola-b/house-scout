@@ -12,20 +12,22 @@ class Register extends StatelessWidget {
   final controller = Get.put(LoginController());
 
   final _form = GlobalKey<FormState>();
-  late final String _username, _email, _password;
+  late final String _username, _email, _password, _confirmPassword;
   final TextEditingController _pass = TextEditingController();
 
   _register() async {
+    // print("password: {$_password}");
     var isValid = _form.currentState!.validate();
-    if (isValid){
-_form.currentState!.save();
-    Get.toNamed('/usertype', arguments: {
-      'username': _username,
-      'email': _email,
-      'password': _password
-    });
+
+    if (isValid) {
+      _form.currentState!.save();
+      print("passwordAfter: {$_password}");
+      Get.toNamed('/usertype', arguments: {
+        'username': _username,
+        'email': _email,
+        'password': _password
+      });
     }
-    
   }
 
   @override
@@ -74,7 +76,10 @@ _form.currentState!.save();
                                 icon: Icons.lock,
                                 maxLines: 1,
                                 validator: Constants.validator,
-                                onSaved: (newValue) => _password = newValue!,
+                                onSaved: (newValue) {
+                                  _password = newValue!;
+                                  print(_password);
+                                },
                                 suffixIcon: GestureDetector(
                                   onTap: () => controller.passwordHidden.value =
                                       !controller.passwordHidden.value,
@@ -98,7 +103,8 @@ _form.currentState!.save();
                                   }
                                   return null;
                                 },
-                                onSaved: (newValue) => _password = newValue!,
+                                onSaved: (newValue) =>
+                                    _confirmPassword = newValue!,
                                 suffixIcon: GestureDetector(
                                   onTap: () => controller.passwordHidden.value =
                                       !controller.passwordHidden.value,

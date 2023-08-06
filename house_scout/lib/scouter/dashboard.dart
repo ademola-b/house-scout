@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:house_scout/utils/defaultText.dart';
+
 
 class ScouterDashboard extends StatelessWidget {
   const ScouterDashboard({super.key});
@@ -9,9 +7,16 @@ class ScouterDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: DefaultText(text: "Scouter"),
-      ),
-    );
+        body: Column(
+      children: [
+        Row(
+          children: [
+            ClipOval(
+              child: Image.asset("assets/images/default.jpg"),
+            )
+          ],
+        )
+      ],
+    ));
   }
 }

@@ -130,7 +130,7 @@ class Login extends StatelessWidget {
                                 fontSize: 20),
                             children: [
                           TextSpan(
-                            text: "Sign up",
+                            text: "Sign Up",
                             style: TextStyle(
                                 color: Constants.primaryColor,
                                 fontWeight: FontWeight.bold),

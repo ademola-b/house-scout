@@ -114,6 +114,7 @@ class UserType extends StatelessWidget {
                         )),
                     Obx(() => TextButton(
                           onPressed: () async {
+                            controller.isClicked.value = true;
                             controller.btnDisabled.value
                                 ? null
                                 : await RemoteServices.register(
@@ -133,11 +134,7 @@ class UserType extends StatelessWidget {
                               ),
                             ),
                           ),
-                          child: const DefaultText(
-                            text: "Submit",
-                            size: 18.0,
-                            color: Colors.white,
-                          ),
+                          child: controller.circ("Submit"),
                         ))
                   ],
                 )

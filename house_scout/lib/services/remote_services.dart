@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
+import 'package:house_scout/controllers/usertype_controller.dart';
 import 'package:house_scout/main.dart';
 import 'package:house_scout/models/login_response.dart';
 import 'package:house_scout/models/registration_response.dart';
@@ -12,6 +13,7 @@ import 'package:http/http.dart' as http;
 class RemoteServices {
   static Future<RegistrationResponse?> register(
       String? username, String? email, String? password, bool? userType) async {
+    final regController = Get.put(UserTypeController());
     try {
       http.Response response = await http.post(
         registerUrl,
@@ -39,6 +41,7 @@ class RemoteServices {
           }
           Get.showSnackbar(
               Constants.customSnackBar(message: output, tag: false));
+          regController.isClicked.value = false;
         } else if (responseData['email'] != null) {
           String output = '';
           for (var element in responseData['email']) {
@@ -46,6 +49,7 @@ class RemoteServices {
           }
           Get.showSnackbar(
               Constants.customSnackBar(message: output, tag: false));
+          regController.isClicked.value = false;
         } else if (responseData['password1'] != null) {
           String output = '';
           for (var element in responseData['password1']) {
@@ -53,6 +57,7 @@ class RemoteServices {
           }
           Get.showSnackbar(
               Constants.customSnackBar(message: output, tag: false));
+          regController.isClicked.value = false;
         } else if (responseData['password2'] != null) {
           String output = '';
           for (var element in responseData['password2']) {
@@ -60,11 +65,13 @@ class RemoteServices {
           }
           Get.showSnackbar(
               Constants.customSnackBar(message: output, tag: false));
+          regController.isClicked.value = false;
         }
       }
     } catch (e) {
       Get.showSnackbar(Constants.customSnackBar(
           message: "An error occurred: $e", tag: false));
+      regController.isClicked.value = false;
     }
 
     return null;

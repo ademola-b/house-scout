@@ -7,7 +7,16 @@ import 'package:house_scout/utils/defaultText.dart';
 import 'package:house_scout/utils/defaultTextFormField.dart';
 
 class FilterController extends GetxController {
-  var _selectedIndex = -1.obs;
+  RxInt _selectedIndex = 0.obs;
+  RxBool selected = false.obs;
+
+  var iconColor = Colors.white.obs;
+
+  iconColorChange() {
+    if (selected.value) {
+      iconColor.value = Colors.white;
+    }
+  }
 }
 
 class ScouterDashboard extends StatelessWidget {
@@ -17,7 +26,7 @@ class ScouterDashboard extends StatelessWidget {
   var filterController = FilterController();
 
   final List<Widget> _icons = [
-    const Icon(Icons.filter_alt_outlined, color: Colors.orange),
+    const Icon(Icons.filter_alt_outlined, color: Colors.white),
     const DefaultText(text: "All", color: Colors.white, size: 18.0),
     const DefaultText(text: "Rent", color: Colors.white, size: 18.0),
     const DefaultText(text: "Lease", color: Colors.white, size: 18.0),
@@ -103,33 +112,39 @@ class ScouterDashboard extends StatelessWidget {
                   ),
                 ],
               ),
-              Wrap(
-                children: List.generate(
-                    4,
-                    (index) => Container(
-                          decoration: const BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(0.0, 1.0),
-                                blurRadius: 10.0)
-                          ]),
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: ChoiceChip(
-                            label: GestureDetector(
-                              child: _icons[index],
-                            ),
-                            backgroundColor: Colors.white,
-                            selectedColor: Colors.orange,
-                            selected: filterController._selectedIndex == index,
-                            onSelected: (bool selected) {
-                              if (selected) {
-                                filterController._selectedIndex = index;
-                                print(filterController._selectedIndex);
-                              }
-                            },
-                          ),
-                        )),
-              ),
+              Obx(() => Wrap(
+                    children: List.generate(
+                        4,
+                        (index) => Container(
+                              // decoration: const BoxDecoration(boxShadow: [
+                              //   BoxShadow(
+                              //       color: Colors.grey,
+                              //       offset: Offset(0.0, 0.5),
+                              //       blurRadius: 6.0)
+                              // ]),
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: ChoiceChip(
+                                label: GestureDetector(
+                                  child: _icons[index],
+                                ),
+                                backgroundColor: Constants.containerColor,
+                                // filterController.backgroundColorChange(),
+                                selectedColor: Colors.orange,
+                                selected:
+                                    filterController._selectedIndex.value ==
+                                        index,
+                                onSelected: (bool selected) {
+                                  if (selected) {
+                                    filterController._selectedIndex.value =
+                                        index;
+                                    filterController.selected.value = true;
+                                    // !filterController.selected.value;
+                                    print(filterController._selectedIndex);
+                                  }
+                                },
+                              ),
+                            )),
+                  )),
               const SizedBox(height: 20.0),
               Center(
                 child: Wrap(

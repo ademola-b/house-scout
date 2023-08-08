@@ -30,6 +30,7 @@ class Register extends StatelessWidget {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -120,9 +121,9 @@ class Register extends StatelessWidget {
                                   onPressed: () {
                                     _register();
                                   },
-                                  text: "Register",
                                   textColor: Colors.white,
-                                  textSize: 18.0))
+                                  textSize: 18.0,
+                                  child: controller.circ("Register")))
                         ],
                       )),
                   const SizedBox(height: 20),

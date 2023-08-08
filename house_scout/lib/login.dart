@@ -75,12 +75,14 @@ class Login extends StatelessWidget {
                           SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: DefaultButton(
-                                  onPressed: () {
-                                    _login();
-                                  },
-                                  text: "Login",
-                                  textColor: Colors.white,
-                                  textSize: 18.0))
+                                onPressed: () {
+                                  _login();
+                                  controller.isClicked.value = true;
+                                },
+                                textSize: 18,
+                                child: controller.circ("Login"),
+                                // text: "Login",
+                              ))
                         ],
                       )),
                   const SizedBox(height: 20),

@@ -9,7 +9,7 @@ import 'package:house_scout/utils/defaultTextFormField.dart';
 
 class Register extends StatelessWidget {
   Register({super.key});
-  final controller = Get.put(LoginController());
+  final controller = Get.put(BtnController());
 
   final _form = GlobalKey<FormState>();
   late final String _username, _email, _password, _confirmPassword;
@@ -29,7 +29,6 @@ class Register extends StatelessWidget {
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

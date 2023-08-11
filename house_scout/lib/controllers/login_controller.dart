@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/utils/defaultText.dart';
 
-class LoginController extends GetxController {
+class BtnController extends GetxController {
   var passwordHidden = true.obs;
 
   var isClicked = false.obs;

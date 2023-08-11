@@ -11,7 +11,7 @@ import 'package:house_scout/utils/defaultText.dart';
 import 'package:house_scout/utils/defaultTextFormField.dart';
 
 class Login extends StatelessWidget {
-  final controller = Get.put(LoginController());
+  final controller = Get.put(BtnController());
   final _form = GlobalKey<FormState>();
 
   late String _username;

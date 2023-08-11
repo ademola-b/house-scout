@@ -7,7 +7,7 @@ import 'package:house_scout/utils/defaultText.dart';
 import 'package:house_scout/utils/defaultTextFormField.dart';
 
 class FilterController extends GetxController {
-  RxInt _selectedIndex = 0.obs;
+  RxInt _selectedIndex = 1.obs;
   RxBool selected = false.obs;
 
   var iconColor = Colors.white.obs;
@@ -140,6 +140,10 @@ class ScouterDashboard extends StatelessWidget {
                                     filterController.selected.value = true;
                                     // !filterController.selected.value;
                                     print(filterController._selectedIndex);
+                                    if (filterController._selectedIndex.value ==
+                                        0) {
+                                      Get.toNamed('/filter');
+                                    }
                                   }
                                 },
                               ),

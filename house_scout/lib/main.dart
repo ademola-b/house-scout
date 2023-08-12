@@ -4,11 +4,16 @@ import 'package:house_scout/house_owner/dashboard.dart';
 import 'package:house_scout/house_owner/owner_navbar.dart';
 import 'package:house_scout/login.dart';
 import 'package:house_scout/register.dart';
+import 'package:house_scout/scouter/chat.dart';
 import 'package:house_scout/scouter/dashboard.dart';
+import 'package:house_scout/scouter/favs.dart';
 import 'package:house_scout/scouter/filter.dart';
 import 'package:house_scout/scouter/nearby_properties.dart';
+import 'package:house_scout/scouter/owner_profile.dart';
+import 'package:house_scout/scouter/payment.dart';
 import 'package:house_scout/scouter/scouter_navbar.dart';
 import 'package:house_scout/scouter/search_result.dart';
+import 'package:house_scout/scouter/view_property.dart';
 import 'package:house_scout/splash.dart';
 import 'package:house_scout/usertype.dart';
 import 'package:house_scout/utils/constants.dart';
@@ -46,7 +51,12 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/scouter', page: () => ScouterDashboard()),
         GetPage(name: '/nearbyProperties', page: () => NearbyProperties()),
         GetPage(name: '/filter', page: () => Filter()),
-        GetPage(name: '/searchResult', page: () => SearchResult())
+        GetPage(name: '/searchResult', page: () => SearchResult()),
+        GetPage(name: '/viewProperty', page: () => ViewProperty()),
+        GetPage(name: '/favs', page: () => Favs()),
+        GetPage(name: '/ownerProfile', page: () => OwnerProfile()),
+        GetPage(name: '/payment', page: () => Payment()),
+        GetPage(name: '/chat', page: () => Chat())
       ],
     );
   }

@@ -8,6 +8,7 @@ import 'package:house_scout/scouter/dashboard.dart';
 import 'package:house_scout/scouter/filter.dart';
 import 'package:house_scout/scouter/nearby_properties.dart';
 import 'package:house_scout/scouter/scouter_navbar.dart';
+import 'package:house_scout/scouter/search_result.dart';
 import 'package:house_scout/splash.dart';
 import 'package:house_scout/usertype.dart';
 import 'package:house_scout/utils/constants.dart';
@@ -40,11 +41,12 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/register', page: () => Register()),
         GetPage(name: '/usertype', page: () => UserType()),
         GetPage(name: '/ownerNavBar', page: () => OwnerNavBar()),
-        GetPage(name: '/houseOwner', page: () => Dashboard()),
+        GetPage(name: '/houseOwner', page: () => const Dashboard()),
         GetPage(name: '/scouterNavBar', page: () => ScouterNavBar()),
         GetPage(name: '/scouter', page: () => ScouterDashboard()),
-        GetPage(name: '/nearbyProperties', page: ()=> NearbyProperties()),
-        GetPage(name: '/filter', page: ()=>Filter())
+        GetPage(name: '/nearbyProperties', page: () => NearbyProperties()),
+        GetPage(name: '/filter', page: () => Filter()),
+        GetPage(name: '/searchResult', page: () => SearchResult())
       ],
     );
   }

@@ -7,6 +7,7 @@ import 'package:house_scout/controllers/login_controller.dart';
 import 'package:house_scout/utils/constants.dart';
 import 'package:house_scout/utils/defaultButton.dart';
 import 'package:house_scout/utils/defaultText.dart';
+import 'package:house_scout/utils/defaultTextFormField.dart';
 import 'package:house_scout/utils/filter_pref.dart';
 
 class Filter extends StatelessWidget {
@@ -69,6 +70,11 @@ class Filter extends StatelessWidget {
                 const SizedBox(height: 10.0),
                 const DefaultText(
                     text: "Budget", color: Colors.orange, size: 18.0),
+                const DefaultTextFormField(
+                    obscureText: false,
+                    icon: Icons.numbers,
+                    hintText: "Enter least amount"),
+                const SizedBox(height: 10.0),
                 const DefaultText(
                     text: "Property Type", color: Colors.orange, size: 18.0),
                 PropertyType(
@@ -94,6 +100,7 @@ class Filter extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: DefaultButton(
                     onPressed: () {
+                      Get.toNamed('/searchResult');
                       btnController.isClicked.value = true;
                     },
                     textSize: 18.0,

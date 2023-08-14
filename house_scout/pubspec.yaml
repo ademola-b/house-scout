@@ -43,6 +43,9 @@ dependencies:
   intl: ^0.18.1
   shared_preferences: ^2.2.0
   circle_nav_bar: ^2.0.1+1
+  easy_geofencing: ^0.2.0
+  image_picker: ^1.0.2
+  path_provider: ^2.1.0
   
 
 dev_dependencies:

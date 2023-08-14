@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:house_scout/house_owner/dashboard.dart';
 import 'package:house_scout/house_owner/owner_navbar.dart';
 import 'package:house_scout/login.dart';
+import 'package:house_scout/profile.dart';
 import 'package:house_scout/register.dart';
 import 'package:house_scout/scouter/chat.dart';
 import 'package:house_scout/scouter/dashboard.dart';
@@ -56,7 +57,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/favs', page: () => Favs()),
         GetPage(name: '/ownerProfile', page: () => OwnerProfile()),
         GetPage(name: '/payment', page: () => Payment()),
-        GetPage(name: '/chat', page: () => Chat())
+        GetPage(name: '/chat', page: () => Chat()),
+        GetPage(name: '/profile', page: ()=> Profile())
       ],
     );
   }

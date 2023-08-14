@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FilterController extends GetxController {
-  RxInt _selectedIndex = 1.obs;
+  RxInt selectedIndex = 1.obs;
   RxBool selected = false.obs;
 
   var iconColor = Colors.white.obs;

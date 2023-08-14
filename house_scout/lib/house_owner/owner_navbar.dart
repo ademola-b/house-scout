@@ -26,7 +26,7 @@ class OwnerNavBar extends StatelessWidget {
       //     )),
       body: Obx(() => IndexedStack(
             index: controller.currentPage.value,
-            children: const [Dashboard(), PostProperty(), More()],
+            children: [Dashboard(), PostProperty(), More()],
           )),
       bottomNavigationBar: Obx(() => CircleNavBar(
             onTap: (index) {

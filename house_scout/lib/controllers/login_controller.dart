@@ -9,6 +9,7 @@ class BtnController extends GetxController {
 
   Widget circ(String action) {
     if (isClicked.value) {
+      print(isClicked);
       return const CircularProgressIndicator();
     } else {
       return DefaultText(text: action, color: Colors.white, size: 18.0);

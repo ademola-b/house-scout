@@ -2,22 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers/dashboard_controller.dart';
+import 'package:house_scout/controllers/filter_controller.dart';
 import 'package:house_scout/utils/constants.dart';
 import 'package:house_scout/utils/defaultText.dart';
 import 'package:house_scout/utils/defaultTextFormField.dart';
 
-class FilterController extends GetxController {
-  RxInt _selectedIndex = 1.obs;
-  RxBool selected = false.obs;
 
-  var iconColor = Colors.white.obs;
-
-  iconColorChange() {
-    if (selected.value) {
-      iconColor.value = Colors.white;
-    }
-  }
-}
 
 class ScouterDashboard extends StatelessWidget {
   ScouterDashboard({super.key});
@@ -131,16 +121,16 @@ class ScouterDashboard extends StatelessWidget {
                                 // filterController.backgroundColorChange(),
                                 selectedColor: Colors.orange,
                                 selected:
-                                    filterController._selectedIndex.value ==
+                                    filterController.selectedIndex.value ==
                                         index,
                                 onSelected: (bool selected) {
                                   if (selected) {
-                                    filterController._selectedIndex.value =
+                                    filterController.selectedIndex.value =
                                         index;
                                     filterController.selected.value = true;
                                     // !filterController.selected.value;
-                                    print(filterController._selectedIndex);
-                                    if (filterController._selectedIndex.value ==
+                                    print(filterController.selectedIndex);
+                                    if (filterController.selectedIndex.value ==
                                         0) {
                                       Get.toNamed('/filter');
                                     }

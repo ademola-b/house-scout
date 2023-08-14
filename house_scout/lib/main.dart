@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/register', page: () => Register()),
         GetPage(name: '/usertype', page: () => UserType()),
         GetPage(name: '/ownerNavBar', page: () => OwnerNavBar()),
-        GetPage(name: '/houseOwner', page: () => const Dashboard()),
+        GetPage(name: '/houseOwner', page: () => Dashboard()),
         GetPage(name: '/scouterNavBar', page: () => ScouterNavBar()),
         GetPage(name: '/scouter', page: () => ScouterDashboard()),
         GetPage(name: '/nearbyProperties', page: () => NearbyProperties()),

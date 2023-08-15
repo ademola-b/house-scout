@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
       // backgroundColor: Constants.backgroundColor,
       splashIconSize: 300.0,
-      nextScreen: OwnerNavBar(),
+      nextScreen: Login(),
     );
   }
 }

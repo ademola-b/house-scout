@@ -25,7 +25,7 @@ class House(models.Model):
     
 class HouseVisuals(models.Model):
     visual_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True)
-    house = models.ForeignKey(House, on_delete=models.CASCADE)
+    house = models.ForeignKey(House, on_delete=models.CASCADE, related_name="house_visuals")
     image = models.ImageField(upload_to='images/house_images', null=True, blank=True)
 
     class Meta:

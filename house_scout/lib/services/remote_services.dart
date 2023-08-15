@@ -3,6 +3,7 @@ import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers/usertype_controller.dart';
 import 'package:house_scout/main.dart';
+import 'package:house_scout/models/house_owner_prop.dart';
 import 'package:house_scout/models/login_response.dart';
 import 'package:house_scout/models/registration_response.dart';
 import 'package:house_scout/models/user_details_response.dart';
@@ -121,5 +122,22 @@ class RemoteServices {
           message: "An error occurred: $e", tag: false));
     }
     return null;
+  }
+
+  static Future<List<HouseOwnerProperty>?> houseOwnerProperties() async {
+    try {
+      http.Response response = await http.get(ownerPropertyUrl, headers: {
+        'Authorization': "Token ${sharedPreferences.getString('token')}"
+      });
+      if (response.statusCode == 200) {
+        final prop = houseOwnerPropertyFromJson(response.body);
+        return prop;
+      }
+    } catch (e) {
+      Get.showSnackbar(Constants.customSnackBar(
+          message: "Server Error: Kindly check your connection", tag: false));
+    }
+
+    return [];
   }
 }

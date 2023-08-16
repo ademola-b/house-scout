@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
+import 'package:house_scout/controllers/login_controller.dart';
 import 'package:house_scout/controllers/usertype_controller.dart';
 import 'package:house_scout/main.dart';
 import 'package:house_scout/models/house_owner_prop.dart';
@@ -12,6 +13,8 @@ import 'package:house_scout/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteServices {
+  static final controller = Get.put(BtnController());
+
   static Future<RegistrationResponse?> register(
       String? username, String? email, String? password, bool? userType) async {
     final regController = Get.put(UserTypeController());
@@ -115,29 +118,47 @@ class RemoteServices {
             Get.showSnackbar(Constants.customSnackBar(
                 message: "User not found", tag: false));
           }
+        } else if (responseData['non_field_errors'] != null) {
+          RemoteServices.controller.isClicked.value = false;
+          Get.showSnackbar(Constants.customSnackBar(
+              message: "${responseData['non_field_errors']}", tag: false));
         }
       }
     } catch (e) {
+      RemoteServices.controller.isClicked.value = false;
+
       Get.showSnackbar(Constants.customSnackBar(
           message: "An error occurred: $e", tag: false));
     }
     return null;
   }
 
-  static Future<List<HouseOwnerProperty>?> houseOwnerProperties() async {
+  static Future<List<HouseOwnerProperty>?> houseOwnerProperties({String? status}) async {
     try {
-      http.Response response = await http.get(ownerPropertyUrl, headers: {
+      if(status==null){
+        http.Response response = await http.get(ownerPropertyUrl, headers: {
         'Authorization': "Token ${sharedPreferences.getString('token')}"
       });
       if (response.statusCode == 200) {
-        final prop = houseOwnerPropertyFromJson(response.body);
-        return prop;
+        return houseOwnerPropertyFromJson(response.body);
       }
+      } else{
+        http.Response response = await http.get(Uri.parse("$baseUrl/api/properties/$status/"), headers: {
+        'Authorization': "Token ${sharedPreferences.getString('token')}"
+      });
+      if (response.statusCode == 200) {
+        return houseOwnerPropertyFromJson(response.body);
+      }
+
+      }
+      
     } catch (e) {
-      Get.showSnackbar(Constants.customSnackBar(
-          message: "Server Error: Kindly check your connection", tag: false));
+      Get.showSnackbar(
+          Constants.customSnackBar(message: "Server Error: $e", tag: false));
     }
 
     return [];
   }
+
+
 }

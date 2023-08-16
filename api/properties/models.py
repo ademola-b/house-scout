@@ -13,7 +13,7 @@ class House(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     desc = models.CharField(max_length=2000)
-    amount = models.CharField(max_length=6)
+    amount = models.CharField(max_length=12)
     address = models.CharField(max_length=1000)
     longitude = models.CharField(max_length = 50)
     latitude = models.CharField(max_length = 50)

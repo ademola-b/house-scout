@@ -12,6 +12,7 @@ class BtnController extends GetxController {
       print(isClicked);
       return const CircularProgressIndicator();
     } else {
+      print(isClicked);
       return DefaultText(text: action, color: Colors.white, size: 18.0);
     }
   }

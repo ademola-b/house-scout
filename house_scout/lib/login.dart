@@ -20,10 +20,13 @@ class Login extends StatelessWidget {
   Login({super.key});
 
   _login() async {
+    controller.isClicked.value = true;
     var isValid = _form.currentState!.validate();
     if (!isValid) return;
+
     _form.currentState!.save();
     await RemoteServices.login(_username, _password);
+    controller.isClicked.value = false;
   }
 
   @override
@@ -74,15 +77,15 @@ class Login extends StatelessWidget {
                           const SizedBox(height: 40),
                           SizedBox(
                               width: MediaQuery.of(context).size.width,
-                              child: DefaultButton(
-                                onPressed: () {
-                                  _login();
-                                  controller.isClicked.value = true;
-                                },
-                                textSize: 18,
-                                child: controller.circ("Login"),
-                                // text: "Login",
-                              ))
+                              child: Obx(() => DefaultButton(
+                                    onPressed: () {
+                                      _login();
+                                      // controller.isClicked.value = true;
+                                    },
+                                    textSize: 18,
+                                    child: controller.circ("Login"),
+                                    // text: "Login",
+                                  )))
                         ],
                       )),
                   const SizedBox(height: 20),

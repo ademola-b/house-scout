@@ -203,7 +203,7 @@ class Dashboard extends StatelessWidget {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(20.0),
-                                                        child: data[index]
+                                                        child: data![index]
                                                                 .houseVisuals!
                                                                 .isEmpty
                                                             ? Image.asset(
@@ -259,7 +259,7 @@ class Dashboard extends StatelessWidget {
                                                               5.0),
                                                       child: DefaultText(
                                                         text:
-                                                            data![index].amount,
+                                                            data[index].amount,
                                                         color: Colors.orange,
                                                         weight: FontWeight.bold,
                                                         size: 15.0,
@@ -418,7 +418,7 @@ class Dashboard extends StatelessWidget {
                                                               const EdgeInsets
                                                                   .all(5.0),
                                                           child: DefaultText(
-                                                            text: data![index]
+                                                            text: data[index]
                                                                 .amount,
                                                             color:
                                                                 Colors.orange,
@@ -583,7 +583,7 @@ class Dashboard extends StatelessWidget {
                                                               const EdgeInsets
                                                                   .all(5.0),
                                                           child: DefaultText(
-                                                            text: data![index]
+                                                            text: data[index]
                                                                 .amount,
                                                             color:
                                                                 Colors.orange,

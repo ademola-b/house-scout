@@ -14,7 +14,7 @@ import 'package:house_scout/scouter/owner_profile.dart';
 import 'package:house_scout/scouter/payment.dart';
 import 'package:house_scout/scouter/scouter_navbar.dart';
 import 'package:house_scout/scouter/search_result.dart';
-import 'package:house_scout/scouter/view_property.dart';
+import 'package:house_scout/view_property.dart';
 import 'package:house_scout/splash.dart';
 import 'package:house_scout/usertype.dart';
 import 'package:house_scout/utils/constants.dart';

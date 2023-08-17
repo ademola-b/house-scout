@@ -4,6 +4,8 @@ import 'package:house_scout/utils/defaultText.dart';
 
 class BtnController extends GetxController {
   var passwordHidden = true.obs;
+  var locationTileStatus = const Icon(Icons.arrow_forward_ios).obs;
+
 
   var isClicked = false.obs;
 

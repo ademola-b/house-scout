@@ -12,12 +12,12 @@ class House(models.Model):
     house_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
-    desc = models.CharField(max_length=2000)
+    desc = models.CharField(max_length=2000, blank=True, null=True)
     amount = models.CharField(max_length=12)
-    address = models.CharField(max_length=1000)
-    longitude = models.CharField(max_length = 50)
-    latitude = models.CharField(max_length = 50)
-    radius = models.CharField(max_length = 3)
+    address = models.CharField(max_length=1000, blank=True, null=True)
+    longitude = models.CharField(max_length = 50, blank=True, null=True)
+    latitude = models.CharField(max_length = 50, blank=True, null=True)
+    radius = models.CharField(max_length = 3, blank=True, null=True)
     status = models.CharField(max_length=50, choices= [("available", "available"), ("rented-out", "rented-out")], default="available")
 
     def __str__(self):

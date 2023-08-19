@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:house_scout/main.dart';
 import 'package:house_scout/utils/defaultText.dart';
 
 class More extends StatelessWidget {
@@ -81,6 +82,7 @@ class More extends StatelessWidget {
                   title: const DefaultText(size: 15.0, text: "Logout"),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () async {
+                    sharedPreferences.clear();
                     Get.offAllNamed('/login');
                   },
                 ),

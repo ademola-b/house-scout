@@ -24,25 +24,24 @@ class HouseSerializer(serializers.ModelSerializer):
     # house_visuals = serializers.ListField(
     #     child = serializers.FileField(allow_empty_file=False, use_url=False)
     # )
-    house_visuals = HouseVisualSerializer(many=True, read_only=True)
+    house_visuals = HouseVisualSerializer(many=True, required=False)
     user = UserDetailsSerializer(read_only=True)
 
     class Meta:
         model = House
-        fields = '__all__'
-        
-        # [
-        #     'house_id', 
-        #     'name',
-        #     'desc',
-        #     'amount', 
-        #     'address',
-        #     'house',
-        #     'longitude',
-        #     'latitude',
-        #     'radius', 
-        #     'status', 
-        # ]
+        fields = [
+            'house_id', 
+            'user',
+            'name',
+            'desc',
+            'amount', 
+            'address',
+            'house_visuals',
+            'longitude',
+            'latitude',
+            'radius', 
+            'status', 
+        ]
     
     # def create(self, validated_data):
     #     validated_data.pop('house_visuals', None)

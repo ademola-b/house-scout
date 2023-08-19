@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers/image_controller.dart';
 import 'package:house_scout/controllers/login_controller.dart';
+import 'package:house_scout/services/remote_services.dart';
 import 'package:house_scout/utils/constants.dart';
 import 'package:house_scout/utils/defaultButton.dart';
 import 'package:house_scout/utils/defaultTextFormField.dart';
@@ -16,20 +17,39 @@ class PostProperty extends StatelessWidget {
   PostProperty({super.key});
 
   final controller = Get.put(BtnController());
-  // final imageController = Get.put(ImageController());
   final imageControllers = List.generate(4, (index) {
     return Get.put(ImageController());
   });
+  final imageController = Get.put(ImageController());
+  // List<File?> imageFiles = imageController.imageList.map((rxFile) => rxFile?.value).toList();
 
   final _form = GlobalKey<FormState>();
   final _form1 = GlobalKey<FormState>();
-  late String _name, _desc, _amt, _addr, _long, _lat;
+  late String _name, _desc, _amt, _addr;
+  String? _long, _lat;
 
-  _post() {
+  _post() async {
+    
     var isValid = _form.currentState!.validate();
     if (!isValid) return;
 
+    // print("imageList1: ${imageControllers[0].getImageList}");
+    // print("imageList1: ${imageControllers[0].imageList[0].value}");
+    // print(
+    //     "imageList1: ${imageControllers[0].getImageList[0].value.runtimeType}");
+
+    List<File?> imageList = [];
+
+    for (var i = 0; i < imageControllers[0].getImageList.length; i++) {
+      // print(imageControllers[0].imageList[i].value.runtimeType);
+      imageList.add(imageControllers[0].imageList[i].value);
+      // print("imageList: ${imageList[0]}");
+    }
+
     _form.currentState!.save();
+    await RemoteServices.postProperty(
+        _name, _desc, _amt, _addr, _long, _lat, "50", "available",
+        house_visuals: imageList);
   }
 
   _locationForm() {

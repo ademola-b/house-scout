@@ -9,6 +9,7 @@ import 'package:path/path.dart' as Path;
 
 class ImageController extends GetxController {
   var imageList = List<Rx<File?>>.generate(4, (_) => Rx<File?>(null));
+  List<Rx<File?>> get getImageList => imageList.obs;
 
   Future getImage(int index, ImageSource source) async {
     try {

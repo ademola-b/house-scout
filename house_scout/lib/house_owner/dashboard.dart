@@ -14,7 +14,6 @@ import '../utils/defaultText.dart';
 class Dashboard extends StatelessWidget {
   Dashboard({super.key});
 
-  var controller = List.generate(4, (index) => DashboardController());
   var filterController = FilterController();
 
   final List<Widget> filterPrefs = [
@@ -164,6 +163,9 @@ class Dashboard extends StatelessWidget {
                                 );
                               } else if (snapshot.hasData) {
                                 var data = snapshot.data;
+                                var controller = List.generate(data!.length,
+                                    (index) => DashboardController());
+
                                 return Wrap(
                                     spacing: 20.0,
                                     runSpacing: 20.0,
@@ -320,6 +322,8 @@ class Dashboard extends StatelessWidget {
                                     );
                                   } else if (snapshot.hasData) {
                                     var data = snapshot.data;
+                                    var controller = List.generate(data!.length,
+                                        (index) => DashboardController());
                                     return Wrap(
                                         spacing: 20.0,
                                         runSpacing: 20.0,
@@ -485,6 +489,8 @@ class Dashboard extends StatelessWidget {
                                     );
                                   } else if (snapshot.hasData) {
                                     var data = snapshot.data;
+                                    var controller = List.generate(data!.length,
+                                        (index) => DashboardController());
                                     return Wrap(
                                         spacing: 20.0,
                                         runSpacing: 20.0,

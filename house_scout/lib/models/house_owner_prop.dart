@@ -11,7 +11,7 @@ String houseOwnerPropertyToJson(List<HouseOwnerProperty> data) =>
 
 class HouseOwnerProperty {
   String? houseId;
-  List<HouseVisual>? houseVisuals;
+  List<dynamic>? houseVisuals;
   User? user;
   String? name;
   String? desc;

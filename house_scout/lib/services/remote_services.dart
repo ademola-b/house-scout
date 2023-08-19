@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/animation.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers/login_controller.dart';
 import 'package:house_scout/controllers/usertype_controller.dart';
@@ -10,7 +13,9 @@ import 'package:house_scout/models/registration_response.dart';
 import 'package:house_scout/models/user_details_response.dart';
 import 'package:house_scout/services/urls.dart';
 import 'package:house_scout/utils/constants.dart';
+import 'package:house_scout/utils/defaultText.dart';
 import 'package:http/http.dart' as http;
+import 'dart:typed_data';
 
 class RemoteServices {
   static final controller = Get.put(BtnController());
@@ -133,25 +138,25 @@ class RemoteServices {
     return null;
   }
 
-  static Future<List<HouseOwnerProperty>?> houseOwnerProperties({String? status}) async {
+  static Future<List<HouseOwnerProperty>?> houseOwnerProperties(
+      {String? status}) async {
     try {
-      if(status==null){
+      if (status == null) {
         http.Response response = await http.get(ownerPropertyUrl, headers: {
-        'Authorization': "Token ${sharedPreferences.getString('token')}"
-      });
-      if (response.statusCode == 200) {
-        return houseOwnerPropertyFromJson(response.body);
+          'Authorization': "Token ${sharedPreferences.getString('token')}"
+        });
+        if (response.statusCode == 200) {
+          return houseOwnerPropertyFromJson(response.body);
+        }
+      } else {
+        http.Response response = await http
+            .get(Uri.parse("$baseUrl/api/properties/$status/"), headers: {
+          'Authorization': "Token ${sharedPreferences.getString('token')}"
+        });
+        if (response.statusCode == 200) {
+          return houseOwnerPropertyFromJson(response.body);
+        }
       }
-      } else{
-        http.Response response = await http.get(Uri.parse("$baseUrl/api/properties/$status/"), headers: {
-        'Authorization': "Token ${sharedPreferences.getString('token')}"
-      });
-      if (response.statusCode == 200) {
-        return houseOwnerPropertyFromJson(response.body);
-      }
-
-      }
-      
     } catch (e) {
       Get.showSnackbar(
           Constants.customSnackBar(message: "Server Error: $e", tag: false));
@@ -160,5 +165,71 @@ class RemoteServices {
     return [];
   }
 
-
+  static Future<void> postProperty(
+      String name,
+      String desc,
+      String amount,
+      String address,
+      String? longitude,
+      String? latitude,
+      String radius,
+      String status,
+      {List<File?>? house_visuals}) async {
+    try {
+      var headers = {
+        'Authorization': 'Token ${sharedPreferences.getString('token')}',
+        "content-type": "multipart/form-data"
+      };
+      var request = http.MultipartRequest('POST', ownerPropertyUrl);
+      request.fields.addAll({
+        "name": name,
+        "desc": desc,
+        "amount": amount,
+        "address": address,
+        "longitude": longitude.toString(),
+        "latitude": latitude.toString(),
+        "radius": radius,
+        "status": status
+      });
+      for (var visual in house_visuals!) {
+        if (visual != null) {
+          request.files.add(
+              await http.MultipartFile.fromPath('house_visuals', visual.path));
+        }
+      }
+      request.headers.addAll(headers);
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 201) {
+        print(await response.stream.bytesToString());
+        // Constants.dialogBox(context)
+        Get.defaultDialog(
+            title: "",
+            content: Column(
+              children: const [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.orange,
+                  size: 120,
+                ),
+                DefaultText(text: "Property Successfully Posted")
+              ],
+            ),
+            middleText: "Property Successfully Posted",
+            actions: [
+              TextButton(
+                  onPressed: () => Get.close(1),
+                  child: const DefaultText(
+                    text: "Okay",
+                    size: 18.0,
+                  ))
+            ]);
+      } else {
+        print(await response.stream.bytesToString());
+        throw Exception("An error occurred: ${response.reasonPhrase}");
+      }
+    } catch (e) {
+      Get.showSnackbar(
+          Constants.customSnackBar(message: "Server Error: $e", tag: false));
+    }
+  }
 }

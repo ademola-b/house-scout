@@ -201,7 +201,6 @@ class RemoteServices {
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 201) {
         print(await response.stream.bytesToString());
-        // Constants.dialogBox(context)
         Get.defaultDialog(
             title: "",
             content: Column(
@@ -217,15 +216,128 @@ class RemoteServices {
             middleText: "Property Successfully Posted",
             actions: [
               TextButton(
-                  onPressed: () => Get.close(1),
+                  onPressed: () => Get.offNamed('/myProperties'),
                   child: const DefaultText(
                     text: "Okay",
                     size: 18.0,
                   ))
             ]);
       } else {
+        controller.isClicked.value = false;
+        // print(await response.stream.bytesToString());
+        throw Exception("An error occurred: ${response.reasonPhrase}");
+      }
+    } catch (e) {
+      Get.showSnackbar(
+          Constants.customSnackBar(message: "Server Error: $e", tag: false));
+    }
+  }
+
+  static Future<HouseOwnerProperty?> updateProperty(
+      String id,
+      String name,
+      String desc,
+      String amount,
+      String address,
+      String? longitude,
+      String? latitude,
+      String radius,
+      String status,
+      {List<File?>? house_visuals}) async {
+    var body = {
+      "name": name,
+      "desc": desc,
+      "amount": amount,
+      "address": address,
+      "longitude": longitude.toString(),
+      "latitude": latitude.toString(),
+      "radius": radius,
+      "status": status
+    };
+    try {
+      var headers = {
+        'Authorization': 'Token ${sharedPreferences.getString('token')}',
+        "content-type": "multipart/form-data"
+      };
+      var request = http.MultipartRequest('PUT', updatePropertyUrl(id));
+      request.fields.addAll(body);
+      for (var visual in house_visuals!) {
+        if (visual != null) {
+          request.files.add(
+              await http.MultipartFile.fromPath('house_visuals', visual.path));
+        }
+      }
+      request.headers.addAll(headers);
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        print(await response.stream.bytesToString());
+        Get.defaultDialog(
+            title: "",
+            content: Column(
+              children: const [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.orange,
+                  size: 120,
+                ),
+                DefaultText(text: "Property Successfully Updated")
+              ],
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Get.close(2);
+                    Get.offNamed('/myProperties');
+                  },
+                  child: const DefaultText(
+                    text: "Okay",
+                    size: 18.0,
+                  ))
+            ]);
+        controller.isClicked.value = false;
+      } else {
+        controller.isClicked.value = false;
+
         print(await response.stream.bytesToString());
         throw Exception("An error occurred: ${response.reasonPhrase}");
+      }
+    } catch (e) {
+      Get.showSnackbar(
+          Constants.customSnackBar(message: "Server Error: $e", tag: false));
+    }
+
+    return null;
+  }
+
+  static Future<void> deleteProperty(String id) async {
+    try {
+      http.Response response = await http.delete(updatePropertyUrl(id),
+          headers: {
+            "Authorization": "Token ${sharedPreferences.getString('token')}"
+          });
+      if (response.statusCode == 204) {
+        Get.defaultDialog(
+            title: "",
+            content: Column(
+              children: const [
+                Icon(
+                  Icons.info,
+                  color: Colors.orange,
+                  size: 120,
+                ),
+                DefaultText(text: "Property Successfully Deleted")
+              ],
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () => Get.offAllNamed('/myProperties'),
+                  child: const DefaultText(
+                    text: "Okay",
+                    size: 18.0,
+                  ))
+            ]);
+      } else {
+        throw Exception("An error occurred: ${response.body}");
       }
     } catch (e) {
       Get.showSnackbar(

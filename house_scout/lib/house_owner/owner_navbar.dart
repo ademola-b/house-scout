@@ -18,12 +18,6 @@ class OwnerNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: Obx(() => PageView(
-      //       controller: controller.pageController.value,
-      //       onPageChanged: (value) {
-      //         controller.currentPage.value = value;
-      //       },
-      //     )),
       body: Obx(() => IndexedStack(
             index: controller.currentPage.value,
             children: [Dashboard(), PostProperty(), More()],
@@ -31,8 +25,6 @@ class OwnerNavBar extends StatelessWidget {
       bottomNavigationBar: Obx(() => CircleNavBar(
             onTap: (index) {
               controller.currentPage.value = index;
-              // controller.pageController.value
-              //     .jumpToPage(controller.currentPage.value);
             },
             activeIndex: controller.currentPage.value,
             activeIcons: const [

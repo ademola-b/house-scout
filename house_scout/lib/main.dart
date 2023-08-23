@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/house_owner/dashboard.dart';
+import 'package:house_scout/house_owner/edit_property.dart';
 import 'package:house_scout/house_owner/owner_navbar.dart';
+import 'package:house_scout/house_owner/properties.dart';
 import 'package:house_scout/login.dart';
 import 'package:house_scout/profile.dart';
 import 'package:house_scout/register.dart';
@@ -48,6 +50,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/usertype', page: () => UserType()),
         GetPage(name: '/ownerNavBar', page: () => OwnerNavBar()),
         GetPage(name: '/houseOwner', page: () => Dashboard()),
+        GetPage(name: '/myProperties', page: () => MyProperties()),
+        GetPage(name: '/editProp', page: ()=> EditProperty()),
         GetPage(name: '/scouterNavBar', page: () => ScouterNavBar()),
         GetPage(name: '/scouter', page: () => ScouterDashboard()),
         GetPage(name: '/nearbyProperties', page: () => NearbyProperties()),
@@ -58,7 +62,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/ownerProfile', page: () => OwnerProfile()),
         GetPage(name: '/payment', page: () => Payment()),
         GetPage(name: '/chat', page: () => Chat()),
-        GetPage(name: '/profile', page: ()=> Profile())
+        GetPage(name: '/profile', page: () => Profile())
       ],
     );
   }

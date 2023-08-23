@@ -2,46 +2,59 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:house_scout/controllers/edit_property_controller.dart';
 import 'package:house_scout/controllers/image_controller.dart';
 import 'package:house_scout/controllers/login_controller.dart';
 import 'package:house_scout/services/remote_services.dart';
 import 'package:house_scout/utils/constants.dart';
 import 'package:house_scout/utils/defaultButton.dart';
+import 'package:house_scout/utils/defaultDropdown.dart';
 import 'package:house_scout/utils/defaultTextFormField.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../utils/defaultText.dart';
 
-class PostProperty extends StatelessWidget {
-  PostProperty({super.key});
-
+class EditProperty extends StatelessWidget {
+  EditProperty({super.key});
   final controller = Get.put(BtnController());
+  var data = Get.arguments;
 
-  final imageControllers = List.generate(4, (index) {
-    return Get.put(ImageController());
+  final edController = Get.put(EditPropertyController());
+
+  final edImageControllers =
+      List.generate(EditPropertyController().filledImageList.length, (index) {
+    return Get.put(EditPropertyController());
   });
 
-  // final imageController = Get.put(ImageController());
+  // final edImageControllers =
+  //     List.generate(EditPropertyController().filledImageList.length, (index) {
+  //   return Get.put(ImageController());
+  // });
 
   final _form = GlobalKey<FormState>();
   final _form1 = GlobalKey<FormState>();
+
   late String _name, _desc, _amt, _addr;
   String? _long, _lat;
 
-  _post() async {
+  var dropdownvalue;
+
+  _updateProperty(String id, String status) async {
     var isValid = _form.currentState!.validate();
     if (!isValid) return;
 
     List<File?> imageList = [];
 
-    for (var i = 0; i < imageControllers[0].getImageList.length; i++) {
-      imageList.add(imageControllers[0].imageList[i].value);
-    }
+    // for (var i = 0; i < imageControllers[0].getImageList.length; i++) {
+    //   imageList.add(imageControllers[0].imageList[i].value);
+    // }
 
     _form.currentState!.save();
-    await RemoteServices.postProperty(
-        _name, _desc, _amt, _addr, _long, _lat, "50", "available",
+    controller.isClicked.value = true;
+
+    await RemoteServices.updateProperty(
+        id, _name, _desc, _amt, _addr, _long, _lat, "50", status,
         house_visuals: imageList);
   }
 
@@ -60,11 +73,13 @@ class PostProperty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    // print("data - ${data['data']['property'].houseId}");
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const DefaultText(
-          text: "Post Property",
+          text: "Edit Property",
           color: Colors.white,
         ),
       ),
@@ -86,25 +101,10 @@ class PostProperty extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const DefaultText(
-                                text: "Add Photo/Video",
-                                color: Colors.black,
-                                size: 18,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  print("cleared");
-                                },
-                                child: const DefaultText(
-                                  text: "Clear All",
-                                  color: Colors.black,
-                                  size: 18,
-                                ),
-                              ),
-                            ],
+                          const DefaultText(
+                            text: "Change Photo",
+                            color: Colors.white,
+                            size: 18,
                           ),
                           const SizedBox(height: 20.0),
                           SingleChildScrollView(
@@ -113,13 +113,15 @@ class PostProperty extends StatelessWidget {
                             child: Row(
                               children: [
                                 Wrap(
-                                  children: List.generate(
-                                      imageControllers.length, (index) {
-                                    final controller = imageControllers[index];
+                                  children: List.generate(4,
+                                      // imageController.imageList.length,
+                                      (index) {
+                                    final control = edImageControllers[index];
 
                                     return Obx(() => GestureDetector(
                                           onTap: () {
-                                            controller.getImage(
+                                            print("index clicked: $index");
+                                            control.getImage(
                                                 index, ImageSource.gallery);
                                           },
                                           child: Padding(
@@ -133,21 +135,30 @@ class PostProperty extends StatelessWidget {
                                                       BorderRadius.circular(
                                                           10.0),
                                                 ),
-                                                child: controller
-                                                            .imageList[index]
-                                                            .value ==
+                                                child: edController
+                                                                .filledImageList[
+                                                            index] ==
                                                         null
                                                     ? const Icon(
                                                         Icons.add,
                                                         size: 50,
                                                         color: Colors.orange,
                                                       )
-                                                    : Image.file(
-                                                        controller
-                                                            .imageList[index]
-                                                            .value!,
-                                                        fit: BoxFit.cover,
-                                                      )),
+                                                    : edController
+                                                                .filledImageList[
+                                                            index] is File
+                                                        ? Image.file(
+                                                            edController
+                                                                    .filledImageList[
+                                                                index],
+                                                            fit: BoxFit.cover,
+                                                          )
+                                                        : Image.memory(
+                                                            edController
+                                                                    .filledImageList[
+                                                                index],
+                                                            fit: BoxFit.cover,
+                                                          )),
                                           ),
                                         ));
                                   }),
@@ -160,6 +171,7 @@ class PostProperty extends StatelessWidget {
                 ),
                 const SizedBox(height: 20.0),
                 DefaultTextFormField(
+                  text: edController.name,
                   obscureText: false,
                   label: "Name",
                   validator: Constants.validator,
@@ -167,6 +179,7 @@ class PostProperty extends StatelessWidget {
                 ),
                 const SizedBox(height: 20.0),
                 DefaultTextFormField(
+                  text: edController.desc,
                   obscureText: false,
                   maxLines: 5,
                   label: "Description",
@@ -176,6 +189,7 @@ class PostProperty extends StatelessWidget {
                 ),
                 const SizedBox(height: 20.0),
                 DefaultTextFormField(
+                  text: edController.amount,
                   obscureText: false,
                   icon: Icons.numbers,
                   label: "Amount Per Month",
@@ -185,6 +199,7 @@ class PostProperty extends StatelessWidget {
                 ),
                 const SizedBox(height: 20.0),
                 DefaultTextFormField(
+                  text: edController.address,
                   obscureText: false,
                   icon: Icons.location_city,
                   label: "Address",
@@ -232,6 +247,7 @@ class PostProperty extends StatelessWidget {
                                           child: Column(
                                             children: [
                                               DefaultTextFormField(
+                                                text: edController.longitude,
                                                 obscureText: false,
                                                 icon:
                                                     Icons.location_on_outlined,
@@ -243,6 +259,7 @@ class PostProperty extends StatelessWidget {
                                               ),
                                               const SizedBox(height: 20.0),
                                               DefaultTextFormField(
+                                                text: edController.latitude,
                                                 obscureText: false,
                                                 icon:
                                                     Icons.location_on_outlined,
@@ -280,16 +297,41 @@ class PostProperty extends StatelessWidget {
                       ),
                     )),
                 const SizedBox(height: 20.0),
+                Obx(() => DefaultDropDown(
+                      onChanged: (newVal) {
+                        dropdownvalue = newVal;
+                        edController.status.value = newVal;
+                      },
+                      dropdownMenuItemList: edController.statusList
+                          .map((item) => DropdownMenuItem(
+                              value: item, child: DefaultText(text: item)))
+                          .toList(),
+                      text: "Status",
+                      value: data['data']['property'].status,
+                      validator: (value) {
+                        if (value == null) {
+                          return "field is required";
+                        }
+
+                        return null;
+                      },
+                      onSaved: (newVal) {
+                        // print("newval - $newVal");
+                        edController.status.value = newVal;
+                        // print(edController.status.value);
+                      },
+                    )),
+                const SizedBox(height: 20.0),
                 SizedBox(
                     width: size.width,
                     child: Obx(() => DefaultButton(
                         onPressed: () {
-                          // controller.isClicked.value = true;
-                          _post();
-                          print("cli");
+                          _updateProperty(data['data']['property'].houseId,
+                              edController.status.value);
+                          print("status-${edController.status.value}");
                         },
                         textSize: 18,
-                        child: controller.circ("Post")))),
+                        child: controller.circ("Update")))),
               ],
             ),
           ),

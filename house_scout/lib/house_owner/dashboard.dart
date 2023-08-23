@@ -76,12 +76,15 @@ class Dashboard extends StatelessWidget {
                   size: 18,
                 ),
                 const SizedBox(height: 20.0),
-                const DefaultTextFormField(
-                  obscureText: false,
-                  hintText: "Search for property",
-                  icon: Icons.search,
-                  borderRadius: 30.0,
-                  fontSize: 15,
+                const SizedBox(
+                  height: 40.0,
+                  child: DefaultTextFormField(
+                    obscureText: false,
+                    hintText: "Search for property",
+                    icon: Icons.search,
+                    borderRadius: 30.0,
+                    fontSize: 15,
+                  ),
                 ),
                 const SizedBox(height: 20.0),
                 Row(
@@ -93,7 +96,7 @@ class Dashboard extends StatelessWidget {
                       weight: FontWeight.bold,
                     ),
                     GestureDetector(
-                      onTap: () => Get.toNamed('/nearbyProperties'),
+                      onTap: () => Get.toNamed('/myProperties'),
                       child: const DefaultText(
                         text: "See More",
                         size: 15,
@@ -495,7 +498,7 @@ class Dashboard extends StatelessWidget {
                                         spacing: 20.0,
                                         runSpacing: 20.0,
                                         children: List.generate(
-                                            data!.length,
+                                            data.length,
                                             (index) => GestureDetector(
                                                   onTap: () => Get.toNamed(
                                                       '/viewProperty',

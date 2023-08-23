@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import permissions
 from rest_framework import status as stats
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 
 
@@ -34,5 +34,9 @@ class HouseView(ListCreateAPIView):
         for visual in self.request.data.getlist("house_visuals"):
             HouseVisuals.objects.create(house = house, image = visual)
         return super().perform_create(serializer)
+    
+class PropertyUpdate(RetrieveUpdateDestroyAPIView):
+    queryset = House.objects.all()
+    serializer_class = HouseSerializer
          
     

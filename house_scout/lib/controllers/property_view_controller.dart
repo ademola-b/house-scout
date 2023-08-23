@@ -5,6 +5,7 @@ import 'package:house_scout/services/remote_services.dart';
 
 class PropertyViewController extends GetxController {
   var userDetails;
+  var count = 1.obs;
 
   Future<UserDetailsResponse?> userDetailsRes() async {
     UserDetailsResponse? user = await RemoteServices.userDetails();

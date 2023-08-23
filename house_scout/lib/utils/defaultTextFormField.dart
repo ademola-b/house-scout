@@ -59,6 +59,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
       onSaved: widget.onSaved,
       obscureText: widget.obscureText,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(10),
         border: OutlineInputBorder(
             borderRadius:
                 BorderRadius.all(Radius.circular(widget.borderRadius)),

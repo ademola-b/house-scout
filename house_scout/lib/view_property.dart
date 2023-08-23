@@ -5,12 +5,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers/dashboard_controller.dart';
 import 'package:house_scout/controllers/property_view_controller.dart';
+import 'package:house_scout/services/remote_services.dart';
 import 'package:house_scout/utils/defaultText.dart';
 
 class ViewProperty extends StatelessWidget {
   ViewProperty({super.key});
 
-  var controller = List.generate(4, (index) => DashboardController());
   var data = Get.arguments;
 
   @override
@@ -71,14 +71,17 @@ class ViewProperty extends StatelessWidget {
                         children: [
                           for (final visual
                               in data['property'].houseVisuals.skip(1))
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: Image.memory(
-                                  visual.imageMem,
-                                  width: size.width / 4,
-                                  height: size.height / 9,
-                                  fit: BoxFit.cover,
-                                )),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  child: Image.memory(
+                                    visual.imageMem,
+                                    width: size.width / 4,
+                                    height: size.height / 9,
+                                    fit: BoxFit.cover,
+                                  )),
+                            ),
                           const SizedBox(width: 20.0),
                         ],
                       ),
@@ -171,7 +174,69 @@ class ViewProperty extends StatelessWidget {
         )),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: data['property'].user.isLandlord
-            ? Container()
+            ? FloatingActionButton.extended(
+                onPressed: () {},
+                label: Row(children: [
+                  GestureDetector(
+                    onTap: () =>
+                        Get.toNamed('/editProp', arguments: {'data': data}),
+                    child: Column(
+                      children: const [
+                        Icon(Icons.edit, color: Colors.white),
+                        DefaultText(
+                          text: "Edit",
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 20.0),
+                  GestureDetector(
+                    onTap: () {
+                      Get.defaultDialog(
+                          title: "",
+                          content: Column(
+                            children: const [
+                              Icon(
+                                Icons.delete_forever,
+                                color: Colors.red,
+                                size: 120,
+                              ),
+                              DefaultText(
+                                  text:
+                                      "Are you sure you want to delete this property ?")
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () => Get.close(1),
+                                child: const DefaultText(
+                                  text: "No",
+                                  size: 18.0,
+                                  color: Colors.orange,
+                                )),
+                            TextButton(
+                                onPressed: () => RemoteServices.deleteProperty(
+                                    data['property'].houseId),
+                                child: const DefaultText(
+                                  text: "Yes",
+                                  size: 18.0,
+                                  color: Colors.red,
+                                )),
+                          ]);
+                    },
+                    child: Column(
+                      children: const [
+                        Icon(Icons.delete_forever, color: Colors.white),
+                        DefaultText(
+                          text: "Delete",
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+              )
             : FloatingActionButton.extended(
                 isExtended: true,
                 onPressed: () {},

@@ -38,5 +38,22 @@ class HouseView(ListCreateAPIView):
 class PropertyUpdate(RetrieveUpdateDestroyAPIView):
     queryset = House.objects.all()
     serializer_class = HouseSerializer
+
+    def perform_update(self, serializer):
+        house = serializer.save(user = self.request.user)
+        print(self.request.data)
+
+        
+        for visual in self.request.data.getlist("house_visuals"):
+            HouseVisuals.objects.update_or_create(house = house, defaults={"image": visual})
+            # house = HouseVisuals.objects.filter(house = house)
+
+            # if house:
+            #     house.image = visual
+            # else:
+            #     HouseVisuals.objects.create(house = house, image = visual)
+        # house.save()
+                
+        return super().perform_update(serializer)
          
     

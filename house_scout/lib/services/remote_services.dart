@@ -243,7 +243,8 @@ class RemoteServices {
       String? latitude,
       String radius,
       String status,
-      {List<File?>? house_visuals}) async {
+      {List<dynamic>? house_visuals,
+      }) async {
     var body = {
       "name": name,
       "desc": desc,
@@ -252,12 +253,13 @@ class RemoteServices {
       "longitude": longitude.toString(),
       "latitude": latitude.toString(),
       "radius": radius,
-      "status": status
+      "status": status,
     };
+   
     try {
       var headers = {
         'Authorization': 'Token ${sharedPreferences.getString('token')}',
-        "content-type": "multipart/form-data"
+        "content-type": "application/json; charset=utf-8"
       };
       var request = http.MultipartRequest('PUT', updatePropertyUrl(id));
       request.fields.addAll(body);
@@ -265,43 +267,47 @@ class RemoteServices {
         if (visual != null) {
           request.files.add(
               await http.MultipartFile.fromPath('house_visuals', visual.path));
+          // http.MultipartFile.fromBytes('house_visuals', visual));
         }
       }
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
+      print("here3: $response");
       if (response.statusCode == 200) {
+        print("here4");
         print(await response.stream.bytesToString());
-        Get.defaultDialog(
-            title: "",
-            content: Column(
-              children: const [
-                Icon(
-                  Icons.check_circle,
-                  color: Colors.orange,
-                  size: 120,
-                ),
-                DefaultText(text: "Property Successfully Updated")
-              ],
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Get.close(2);
-                    Get.offNamed('/myProperties');
-                  },
-                  child: const DefaultText(
-                    text: "Okay",
-                    size: 18.0,
-                  ))
-            ]);
+        // Get.defaultDialog(
+        //     title: "",
+        //     content: Column(
+        //       children: const [
+        //         Icon(
+        //           Icons.check_circle,
+        //           color: Colors.orange,
+        //           size: 120,
+        //         ),
+        //         DefaultText(text: "Property Successfully Updated")
+        //       ],
+        //     ),
+        //     actions: [
+        //       TextButton(
+        //           onPressed: () {
+        //             Get.close(2);
+        //             Get.offNamed('/myProperties');
+        //           },
+        //           child: const DefaultText(
+        //             text: "Okay",
+        //             size: 18.0,
+        //           ))
+        //     ]);
         controller.isClicked.value = false;
       } else {
-        controller.isClicked.value = false;
-
+        print("printed");
         print(await response.stream.bytesToString());
         throw Exception("An error occurred: ${response.reasonPhrase}");
       }
     } catch (e) {
+      controller.isClicked.value = false;
+      print("error : $e");
       Get.showSnackbar(
           Constants.customSnackBar(message: "Server Error: $e", tag: false));
     }
@@ -330,7 +336,7 @@ class RemoteServices {
             ),
             actions: [
               TextButton(
-                  onPressed: () => Get.offAllNamed('/myProperties'),
+                  onPressed: () => Get.offNamed('/myProperties'),
                   child: const DefaultText(
                     text: "Okay",
                     size: 18.0,
@@ -340,6 +346,7 @@ class RemoteServices {
         throw Exception("An error occurred: ${response.body}");
       }
     } catch (e) {
+      controller.isClicked.value = false;
       Get.showSnackbar(
           Constants.customSnackBar(message: "Server Error: $e", tag: false));
     }

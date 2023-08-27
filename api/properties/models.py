@@ -25,9 +25,13 @@ class House(models.Model):
     
 class HouseVisuals(models.Model):
     visual_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True)
+    index = models.IntegerField(default=0)
     house = models.ForeignKey(House, on_delete=models.CASCADE, related_name="house_visuals")
     image = models.ImageField(upload_to='images/house_images', null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "House Visuals"
+    
+    def __str__(self):
+        return '{0}'.format(self.house.name)
 

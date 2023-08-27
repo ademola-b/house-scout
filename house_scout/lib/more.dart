@@ -24,6 +24,14 @@ class More extends StatelessWidget {
     Icons.lock
   ];
 
+  final List _labelRoute = [
+    '/profile',
+    '/profile',
+    '/profile',
+    '/profile',
+    '/profile',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -62,7 +70,9 @@ class More extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(color: Colors.orange, width: 1.0)),
                     child: ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed(_labelRoute[index]);
+                      },
                       leading: Icon(_labelIcons[index], color: Colors.orange),
                       title: DefaultText(text: _labels[index]),
                       trailing: const Icon(Icons.arrow_forward_ios),

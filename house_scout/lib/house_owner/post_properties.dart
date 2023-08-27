@@ -10,24 +10,37 @@ import 'package:house_scout/utils/defaultButton.dart';
 import 'package:house_scout/utils/defaultTextFormField.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../utils/defaultText.dart';
 
 class PostProperty extends StatelessWidget {
   PostProperty({super.key});
 
-  final controller = Get.put(BtnController());
+  // final controller = Get.put(BtnController());
+  // final coordController = ;
+
+  final btnControllers = List.generate(2, (index) => Get.put(BtnController()));
 
   final imageControllers = List.generate(4, (index) {
     return Get.put(ImageController());
   });
 
-  // final imageController = Get.put(ImageController());
-
   final _form = GlobalKey<FormState>();
   final _form1 = GlobalKey<FormState>();
   late String _name, _desc, _amt, _addr;
   String? _long, _lat;
+
+  Position? position;
+  bool isReady = false;
+  TextEditingController latController = TextEditingController();
+  TextEditingController lonController = TextEditingController();
+
+  getCurrentPosition() async {
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    isReady = position != null ? true : false;
+  }
 
   _post() async {
     var isValid = _form.currentState!.validate();
@@ -50,7 +63,7 @@ class PostProperty extends StatelessWidget {
     if (!isValid) return;
 
     _form1.currentState!.save();
-    controller.locationTileStatus.value = const Icon(
+    btnControllers[0].locationTileStatus.value = const Icon(
       Icons.check_rounded,
       color: Colors.green,
     );
@@ -91,7 +104,7 @@ class PostProperty extends StatelessWidget {
                             children: [
                               const DefaultText(
                                 text: "Add Photo/Video",
-                                color: Colors.black,
+                                color: Colors.white,
                                 size: 18,
                               ),
                               GestureDetector(
@@ -100,7 +113,7 @@ class PostProperty extends StatelessWidget {
                                 },
                                 child: const DefaultText(
                                   text: "Clear All",
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   size: 18,
                                 ),
                               ),
@@ -218,20 +231,54 @@ class PostProperty extends StatelessWidget {
                                               MainAxisAlignment.end,
                                           children: [
                                             Obx(() => DefaultButton(
-                                                onPressed: () {
-                                                  // controller.isClicked.value = true;
+                                                onPressed: () async {
+                                                  btnControllers[1]
+                                                      .isClicked
+                                                      .value = true;
+                                                  await getCurrentPosition();
+                                                  if (isReady) {
+                                                    latController.text =
+                                                        position!.latitude
+                                                            .toString();
+                                                    lonController.text =
+                                                        position!.longitude
+                                                            .toString();
+                                                    btnControllers[1]
+                                                        .isClicked
+                                                        .value = false;
+                                                  }
                                                 },
                                                 textSize: 18,
-                                                child: controller
+                                                child: btnControllers[1]
                                                     .circ("Get Coordinates")))
                                           ],
                                         ),
                                         const SizedBox(height: 20.0),
+                                        RichText(
+                                            text: const TextSpan(
+                                                text: "Note: ",
+                                                style: TextStyle(
+                                                    fontFamily: 'Inter',
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                                children: [
+                                              TextSpan(
+                                                text:
+                                                    "Kindly, be in the vicinity of the property before submitting this form",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.normal),
+                                              )
+                                            ])),
+                                        const SizedBox(height: 10.0),
                                         Form(
                                           key: _form1,
                                           child: Column(
                                             children: [
                                               DefaultTextFormField(
+                                                text: lonController,
                                                 obscureText: false,
                                                 icon:
                                                     Icons.location_on_outlined,
@@ -243,6 +290,7 @@ class PostProperty extends StatelessWidget {
                                               ),
                                               const SizedBox(height: 20.0),
                                               DefaultTextFormField(
+                                                text: latController,
                                                 obscureText: false,
                                                 icon:
                                                     Icons.location_on_outlined,
@@ -262,7 +310,7 @@ class PostProperty extends StatelessWidget {
                                                       _locationForm();
                                                     },
                                                     textSize: 18,
-                                                    child: controller
+                                                    child: btnControllers[0]
                                                         .circ("Submit"))),
                                               )
                                             ],
@@ -276,7 +324,7 @@ class PostProperty extends StatelessWidget {
                         },
                         leading: const Icon(Icons.near_me),
                         title: const DefaultText(text: "Location"),
-                        trailing: controller.locationTileStatus.value,
+                        trailing: btnControllers[0].locationTileStatus.value,
                       ),
                     )),
                 const SizedBox(height: 20.0),
@@ -286,10 +334,10 @@ class PostProperty extends StatelessWidget {
                         onPressed: () {
                           // controller.isClicked.value = true;
                           _post();
-                          print("cli");
+                          // print("cli");
                         },
                         textSize: 18,
-                        child: controller.circ("Post")))),
+                        child: btnControllers[0].circ("Post")))),
               ],
             ),
           ),

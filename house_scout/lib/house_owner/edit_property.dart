@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers/edit_property_controller.dart';
@@ -40,15 +41,50 @@ class EditProperty extends StatelessWidget {
 
   var dropdownvalue;
 
+  Future<File> convertImageMemoryToFile(
+      Uint8List imageMemory, String outputPath) async {
+    File imageFile = File(outputPath);
+    try {
+      await imageFile.writeAsBytes(imageMemory);
+      print('Image memory converted to file: $imageFile');
+    } catch (e) {
+      print('Error converting image memory to file: $e');
+    }
+    return imageFile;
+  }
+
   _updateProperty(String id, String status) async {
     var isValid = _form.currentState!.validate();
     if (!isValid) return;
 
-    List<File?> imageList = [];
+    List<dynamic> imageList = [];
+    List<dynamic> indexes = [];
 
-    // for (var i = 0; i < imageControllers[0].getImageList.length; i++) {
-    //   imageList.add(imageControllers[0].imageList[i].value);
-    // }
+    for (var i = 0; i < edImageControllers[0].getFilledImageList.length; i++) {
+      if (edImageControllers[0].filledImageList[i] is File) {
+        imageList.add(edImageControllers[0].filledImageList[i]);
+        indexes.add(i);
+      } else {
+        if (edImageControllers[0].filledImageList[i] != null) {
+          final dir = await getExternalStorageDirectory();
+          final outputPath =
+              "/data/user/0/com.example.house_scout/app_flutter/img$i.jpg";
+
+          File imageFile = File(outputPath);
+          if (!await imageFile.exists()) {
+            imageFile.create(recursive: true);
+          }
+
+          imageFile.writeAsBytes(edImageControllers[0].filledImageList[i]);
+          imageList.add(imageFile);
+        indexes.add(i);
+
+          // imageFile.writeAsBytes(edImageControllers[0].filledImageList[i]));
+        }
+      }
+    }
+
+    // print("imagessss - $imageList");
 
     _form.currentState!.save();
     controller.isClicked.value = true;

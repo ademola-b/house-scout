@@ -10,7 +10,7 @@ class HouseVisualSerializer(serializers.ModelSerializer):
     image_mem = serializers.SerializerMethodField('image_memory')
     class Meta:
         model = HouseVisuals
-        fields = ['visual_id','image_mem']
+        fields = ['visual_id', 'index', 'image_mem']
 
     def image_memory(request, image:HouseVisuals):
         if image.image.name is not None:

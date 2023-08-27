@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,7 @@ class EditPropertyController extends GetxController {
   TextEditingController latitude = TextEditingController();
 
   var filledImageList = List<dynamic>.filled(4, null).obs;
+  List get getFilledImageList => filledImageList;
   var imageList = [].obs;
 
   @override
@@ -51,6 +53,8 @@ class EditPropertyController extends GetxController {
     }
   }
 
+  
+
   Future getImage(int index, ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
@@ -58,7 +62,10 @@ class EditPropertyController extends GetxController {
       if (image == null) return;
 
       final imgPerm = await saveImagePermanently(image.path);
+
+      // Uint8List converted_image = await convertImageFileToMemory(imgPerm.path);
       filledImageList[index] = imgPerm;
+      // filledImageList[index] = converted_image;
       print("im - $filledImageList");
     } catch (e) {
       print(e);

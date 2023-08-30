@@ -26,6 +26,9 @@ class HouseView(ListCreateAPIView):
                 # to write a permission to handle if a wrong choice is provided
             else:
                 return self.queryset.filter(user = self.request.user)
+        elif not self.request.user.is_landlord:
+            return self.queryset.filter(status = 'available')
+        
         else:
             return self.queryset.none()
             

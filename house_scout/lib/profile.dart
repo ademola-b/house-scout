@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:house_scout/utils/constants.dart';
 import 'package:house_scout/utils/defaultText.dart';
 
@@ -16,7 +15,8 @@ class Profile extends StatelessWidget {
           children: [
             Container(
               color: Colors.orange,
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
               child: Column(children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,15 +51,67 @@ class Profile extends StatelessWidget {
                     text: "Faisol Ademola", size: 20.0, color: Colors.white),
               ]),
             ),
-            const ListTile(
-              leading: Icon(Icons.person_pin),
-              title: DefaultText(text: "Name"),
-              subtitle: DefaultText(
-                text: "Faisol Ademola",
-                size: 18.0,
-                color: Constants.primaryColor,
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Form(
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.person),
+                        labelText: 'Full Name',
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.person_add_alt_1),
+                        labelText: 'Username',
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.mail),
+                        labelText: 'Email',
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    TextFormField(
+                      keyboardType: TextInputType.phone,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.phone),
+                        labelText: 'Phone Number',
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.phone),
+                        labelText: 'Gender',
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.location_city),
+                        labelText: 'Location',
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                  ],
+                ),
               ),
-            )
+            ),
+            // const ListTile(
+            //   leading: Icon(Icons.person_pin),
+            //   title: DefaultText(text: "Name"),
+            //   subtitle: DefaultText(
+            //     text: "Faisol Ademola",
+            //     size: 18.0,
+            //     color: Constants.primaryColor,
+            //   ),
+            // )
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:house_scout/change_password.dart';
 import 'package:house_scout/house_owner/dashboard.dart';
 import 'package:house_scout/house_owner/edit_property.dart';
 import 'package:house_scout/house_owner/owner_navbar.dart';
@@ -62,7 +63,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/ownerProfile', page: () => OwnerProfile()),
         GetPage(name: '/payment', page: () => Payment()),
         GetPage(name: '/chat', page: () => Chat()),
-        GetPage(name: '/profile', page: () => Profile())
+        GetPage(name: '/profile', page: () => Profile()),
+        GetPage(name: '/changePassword', page: () => ChangePassword()),
       ],
     );
   }

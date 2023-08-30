@@ -29,7 +29,7 @@ class More extends StatelessWidget {
     '/profile',
     '/profile',
     '/profile',
-    '/profile',
+    '/changePassword',
   ];
 
   @override

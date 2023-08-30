@@ -48,12 +48,9 @@ class EditPropertyController extends GetxController {
       for (var i = 0; i < imageList.length; i++) {
         filledImageList[i] = imageList[i].imageMem;
       }
-
-      print("filled - $filledImageList");
+      // print("filled - $filledImageList");
     }
   }
-
-  
 
   Future getImage(int index, ImageSource source) async {
     try {

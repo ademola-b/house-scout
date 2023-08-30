@@ -17,8 +17,6 @@ import '../utils/defaultText.dart';
 class PostProperty extends StatelessWidget {
   PostProperty({super.key});
 
-  // final controller = Get.put(BtnController());
-  // final coordController = ;
 
   final btnControllers = List.generate(2, (index) => Get.put(BtnController()));
 

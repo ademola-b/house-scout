@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers/dashboard_controller.dart';
@@ -173,7 +171,7 @@ class Dashboard extends StatelessWidget {
                                     spacing: 20.0,
                                     runSpacing: 20.0,
                                     children: List.generate(
-                                        data!.length,
+                                        data.length,
                                         (index) => GestureDetector(
                                               onTap: () => Get.toNamed(
                                                   '/viewProperty',
@@ -208,7 +206,7 @@ class Dashboard extends StatelessWidget {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(20.0),
-                                                        child: data![index]
+                                                        child: data[index]
                                                                 .houseVisuals!
                                                                 .isEmpty
                                                             ? Image.asset(

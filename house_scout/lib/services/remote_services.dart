@@ -103,8 +103,7 @@ class RemoteServices {
     return null;
   }
 
-  static Future<LoginResponse?> login(
-      String? username, String? password) async {
+  static Future<LoginResponse?> login(String? username, String? password) async {
     try {
       http.Response response = await http
           .post(loginUrl, body: {'username': username, 'password': password});

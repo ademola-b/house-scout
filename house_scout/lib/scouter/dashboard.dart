@@ -3,17 +3,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers/dashboard_controller.dart';
 import 'package:house_scout/controllers/filter_controller.dart';
+import 'package:house_scout/services/remote_services.dart';
 import 'package:house_scout/utils/constants.dart';
 import 'package:house_scout/utils/defaultText.dart';
 import 'package:house_scout/utils/defaultTextFormField.dart';
 
-
-
 class ScouterDashboard extends StatelessWidget {
   ScouterDashboard({super.key});
-  // var controller = List.generate(4, (index) => Get.put(DashboardController()));
-  var controller = List.generate(4, (index) => DashboardController());
+  var controller = List.generate(4, (index) => Get.put(DashboardController()));
   var filterController = FilterController();
+  var propController = Get.put(DashboardController());
+
+  // var dashController = Get.put(DashboardController());
 
   final List<Widget> _icons = [
     const Icon(Icons.filter_alt_outlined, color: Colors.white),
@@ -75,12 +76,15 @@ class ScouterDashboard extends StatelessWidget {
                 size: 18,
               ),
               const SizedBox(height: 20.0),
-              const DefaultTextFormField(
-                obscureText: false,
-                hintText: "Search for property",
-                icon: Icons.search,
-                borderRadius: 30.0,
-                fontSize: 15,
+              const SizedBox(
+                height: 40.0,
+                child: DefaultTextFormField(
+                  obscureText: false,
+                  hintText: "Search for property",
+                  icon: Icons.search,
+                  borderRadius: 30.0,
+                  fontSize: 15,
+                ),
               ),
               const SizedBox(height: 20.0),
               Row(
@@ -106,19 +110,12 @@ class ScouterDashboard extends StatelessWidget {
                     children: List.generate(
                         4,
                         (index) => Container(
-                              // decoration: const BoxDecoration(boxShadow: [
-                              //   BoxShadow(
-                              //       color: Colors.grey,
-                              //       offset: Offset(0.0, 0.5),
-                              //       blurRadius: 6.0)
-                              // ]),
                               padding: const EdgeInsets.only(right: 10.0),
                               child: ChoiceChip(
                                 label: GestureDetector(
                                   child: _icons[index],
                                 ),
                                 backgroundColor: Constants.containerColor,
-                                // filterController.backgroundColorChange(),
                                 selectedColor: Colors.orange,
                                 selected:
                                     filterController.selectedIndex.value ==
@@ -141,110 +138,145 @@ class ScouterDashboard extends StatelessWidget {
                   )),
               const SizedBox(height: 20.0),
               Center(
-                child: Wrap(
-                    spacing: 20.0,
-                    runSpacing: 20.0,
-                    children: List.generate(
-                        4,
-                        (index) => GestureDetector(
-                              onTap: () => Get.toNamed('/viewProperty'),
-                              child: Container(
-                                padding: const EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    border: Border.all(
-                                        style: BorderStyle.solid,
-                                        color: Colors.white),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.grey,
-                                          offset: Offset(0.0, 1.0),
-                                          blurRadius: 6.0)
-                                    ]),
-                                width: size.width / 2.5,
-                                height: size.width / 1.8,
-                                child: Column(
-                                  children: [
-                                    Stack(children: [
-                                      ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        child: Image.asset(
-                                          "assets/images/bld.jpeg",
-                                          width: size.width,
-                                          height: 110,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 5,
-                                        right: 5,
+                child: propController.properties.isEmpty
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: SvgPicture.asset(
+                              "assets/images/balcony.svg",
+                              width: 180,
+                              height: 180,
+                            ),
+                          ),
+                          const DefaultText(
+                            text:
+                                "No Nearby Property Availabe for rent/lease at the moment",
+                            size: 18,
+                            color: Colors.orange,
+                            align: TextAlign.center,
+                          ),
+                        ],
+                      )
+                    : ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: propController.properties.length,
+                        itemBuilder: (context, index) {
+                          return Wrap(
+                              spacing: 20.0,
+                              runSpacing: 20.0,
+                              children: List.generate(
+                                  propController.properties.length,
+                                  (index) => GestureDetector(
+                                        onTap: () => Get.toNamed(
+                                            '/viewProperty',
+                                            arguments: {
+                                              'property': propController
+                                                  .properties[index]
+                                            }),
                                         child: Container(
-                                          width: 40,
-                                          height: 40,
+                                          padding: const EdgeInsets.all(10.0),
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(100),
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              border: Border.all(
+                                                  style: BorderStyle.solid,
+                                                  color: Colors.white),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                    color: Colors.grey,
+                                                    offset: Offset(0.0, 1.0),
+                                                    blurRadius: 6.0)
+                                              ]),
+                                          width: size.width / 2.5,
+                                          height: size.width / 1.8,
+                                          child: Column(
+                                            children: [
+                                              Stack(children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0),
+                                                  child: propController
+                                                          .properties[index]
+                                                          .houseVisuals!
+                                                          .isEmpty
+                                                      ? Image.asset(
+                                                          "assets/images/bld.jpeg",
+                                                          width: size.width,
+                                                          height: 110,
+                                                          fit: BoxFit.cover)
+                                                      : Image.memory(
+                                                          propController
+                                                              .properties[index]
+                                                              .houseVisuals![0]
+                                                              .imageMem,
+                                                          width: size.width,
+                                                          height: 110,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                ),
+                                                Positioned(
+                                                  top: 5,
+                                                  right: 5,
+                                                  child: Container(
+                                                    width: 40,
+                                                    height: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                    ),
+                                                    child: Obx(() =>
+                                                        GestureDetector(
+                                                          onTap: () => controller[
+                                                                  index]
+                                                              .changeFavIcon(),
+                                                          child:
+                                                              controller[index]
+                                                                  .icon
+                                                                  .value,
+                                                        )),
+                                                  ),
+                                                )
+                                              ]),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: DefaultText(
+                                                  text:
+                                                      "${propController.properties[index].amount}/month",
+                                                  color: Colors.orange,
+                                                  weight: FontWeight.bold,
+                                                  size: 15.0,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: DefaultText(
+                                                  text: propController
+                                                      .properties[index].name,
+                                                  weight: FontWeight.bold,
+                                                  size: 15.0,
+                                                  align: TextAlign.left,
+                                                ),
+                                              ),
+                                              DefaultText(
+                                                text: propController
+                                                    .properties[index].address,
+                                                weight: FontWeight.bold,
+                                                size: 15.0,
+                                              ),
+                                            ],
                                           ),
-                                          child: Obx(() => GestureDetector(
-                                                onTap: () => controller[index]
-                                                    .changeFavIcon(),
-                                                child: controller[index]
-                                                    .icon
-                                                    .value,
-                                              )),
                                         ),
-                                      )
-                                    ]),
-                                    const Padding(
-                                      padding: EdgeInsets.all(5.0),
-                                      child: DefaultText(
-                                        text: "Price/month",
-                                        color: Colors.orange,
-                                        weight: FontWeight.bold,
-                                        size: 15.0,
-                                      ),
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.all(5.0),
-                                      child: DefaultText(
-                                        text: "Name",
-                                        weight: FontWeight.bold,
-                                        size: 15.0,
-                                        align: TextAlign.left,
-                                      ),
-                                    ),
-                                    const DefaultText(
-                                      text: "Address",
-                                      weight: FontWeight.bold,
-                                      size: 15.0,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ))),
+                                      )));
+                        }),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: SvgPicture.asset(
-                      "assets/images/balcony.svg",
-                      width: 180,
-                      height: 180,
-                    ),
-                  ),
-                  const DefaultText(
-                    text:
-                        "No Nearby Property Availabe for rent/lease at the moment",
-                    size: 18,
-                    color: Colors.orange,
-                    align: TextAlign.center,
-                  ),
-                ],
-              )
             ],
           ),
         ),

@@ -103,7 +103,8 @@ class RemoteServices {
     return null;
   }
 
-  static Future<LoginResponse?> login(String? username, String? password) async {
+  static Future<LoginResponse?> login(
+      String? username, String? password) async {
     try {
       http.Response response = await http
           .post(loginUrl, body: {'username': username, 'password': password});
@@ -114,8 +115,10 @@ class RemoteServices {
           UserDetailsResponse? userDetail = await RemoteServices.userDetails();
           if (userDetail != null) {
             if (userDetail.isLandlord) {
+              sharedPreferences.setBool("is_landlord", true);
               Get.offAllNamed('/ownerNavBar');
             } else {
+              sharedPreferences.setBool("is_landlord", false);
               Get.offAllNamed('/scouterNavBar');
             }
           } else {
@@ -138,8 +141,17 @@ class RemoteServices {
   }
 
   static Future<List<HouseOwnerProperty>?> houseOwnerProperties(
-      {String? status}) async {
+      {String? status, int? owner}) async {
     try {
+      if (owner != null) {
+        http.Response response = await http
+            .get(Uri.parse("$baseUrl/api/properties/owner/$owner/"), headers: {
+          'Authorization': "Token ${sharedPreferences.getString('token')}"
+        });
+        if (response.statusCode == 200) {
+          return houseOwnerPropertyFromJson(response.body);
+        }
+      }
       if (status == null) {
         http.Response response = await http.get(ownerPropertyUrl, headers: {
           'Authorization': "Token ${sharedPreferences.getString('token')}"
@@ -233,17 +245,17 @@ class RemoteServices {
   }
 
   static Future<HouseOwnerProperty?> updateProperty(
-      String id,
-      String name,
-      String desc,
-      String amount,
-      String address,
-      String? longitude,
-      String? latitude,
-      String radius,
-      String status,
-      {List<dynamic>? house_visuals,
-      }) async {
+    String id,
+    String name,
+    String desc,
+    String amount,
+    String address,
+    String? longitude,
+    String? latitude,
+    String radius,
+    String status, {
+    List<dynamic>? house_visuals,
+  }) async {
     var body = {
       "name": name,
       "desc": desc,
@@ -254,7 +266,7 @@ class RemoteServices {
       "radius": radius,
       "status": status,
     };
-   
+
     try {
       var headers = {
         'Authorization': 'Token ${sharedPreferences.getString('token')}',

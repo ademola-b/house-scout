@@ -14,8 +14,6 @@ class ScouterDashboard extends StatelessWidget {
   var filterController = FilterController();
   var propController = Get.put(DashboardController());
 
-  // var dashController = Get.put(DashboardController());
-
   final List<Widget> _icons = [
     const Icon(Icons.filter_alt_outlined, color: Colors.white),
     const DefaultText(text: "All", color: Colors.white, size: 18.0),
@@ -26,6 +24,7 @@ class ScouterDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
           body: Padding(
@@ -137,146 +136,152 @@ class ScouterDashboard extends StatelessWidget {
                             )),
                   )),
               const SizedBox(height: 20.0),
-              Center(
-                child: propController.properties.isEmpty
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: SvgPicture.asset(
-                              "assets/images/balcony.svg",
-                              width: 180,
-                              height: 180,
+              Obx(
+                () => Center(
+                  child: propController.properties.isEmpty
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: SvgPicture.asset(
+                                "assets/images/balcony.svg",
+                                width: 180,
+                                height: 180,
+                              ),
                             ),
-                          ),
-                          const DefaultText(
-                            text:
-                                "No Nearby Property Availabe for rent/lease at the moment",
-                            size: 18,
-                            color: Colors.orange,
-                            align: TextAlign.center,
-                          ),
-                        ],
-                      )
-                    : ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: propController.properties.length,
-                        itemBuilder: (context, index) {
-                          return Wrap(
-                              spacing: 20.0,
-                              runSpacing: 20.0,
-                              children: List.generate(
-                                  propController.properties.length,
-                                  (index) => GestureDetector(
-                                        onTap: () => Get.toNamed(
-                                            '/viewProperty',
-                                            arguments: {
-                                              'property': propController
-                                                  .properties[index]
-                                            }),
-                                        child: Container(
-                                          padding: const EdgeInsets.all(10.0),
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                              border: Border.all(
-                                                  style: BorderStyle.solid,
-                                                  color: Colors.white),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                    color: Colors.grey,
-                                                    offset: Offset(0.0, 1.0),
-                                                    blurRadius: 6.0)
-                                              ]),
-                                          width: size.width / 2.5,
-                                          height: size.width / 1.8,
-                                          child: Column(
-                                            children: [
-                                              Stack(children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20.0),
-                                                  child: propController
-                                                          .properties[index]
-                                                          .houseVisuals!
-                                                          .isEmpty
-                                                      ? Image.asset(
-                                                          "assets/images/bld.jpeg",
-                                                          width: size.width,
-                                                          height: 110,
-                                                          fit: BoxFit.cover)
-                                                      : Image.memory(
-                                                          propController
-                                                              .properties[index]
-                                                              .houseVisuals![0]
-                                                              .imageMem,
-                                                          width: size.width,
-                                                          height: 110,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                ),
-                                                Positioned(
-                                                  top: 5,
-                                                  right: 5,
-                                                  child: Container(
-                                                    width: 40,
-                                                    height: 40,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100),
-                                                    ),
-                                                    child: Obx(() =>
-                                                        GestureDetector(
-                                                          onTap: () => controller[
-                                                                  index]
-                                                              .changeFavIcon(),
-                                                          child:
-                                                              controller[index]
-                                                                  .icon
-                                                                  .value,
-                                                        )),
+                            const DefaultText(
+                              text:
+                                  "No Nearby Property Availabe for rent/lease at the moment",
+                              size: 18,
+                              color: Colors.orange,
+                              align: TextAlign.center,
+                            ),
+                          ],
+                        )
+                      : ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: propController.properties.length,
+                          itemBuilder: (context, index) {
+                            return Wrap(
+                                spacing: 20.0,
+                                runSpacing: 20.0,
+                                children: List.generate(
+                                    propController.properties.length,
+                                    (index) => GestureDetector(
+                                          onTap: () => Get.toNamed(
+                                              '/viewProperty',
+                                              arguments: {
+                                                'property': propController
+                                                    .properties[index]
+                                              }),
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                                border: Border.all(
+                                                    style: BorderStyle.solid,
+                                                    color: Colors.white),
+                                                boxShadow: const [
+                                                  BoxShadow(
+                                                      color: Colors.grey,
+                                                      offset: Offset(0.0, 1.0),
+                                                      blurRadius: 6.0)
+                                                ]),
+                                            width: size.width / 2.5,
+                                            height: size.width / 1.8,
+                                            child: Column(
+                                              children: [
+                                                Stack(children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
+                                                    child: propController
+                                                            .properties[index]
+                                                            .houseVisuals!
+                                                            .isEmpty
+                                                        ? Image.asset(
+                                                            "assets/images/bld.jpeg",
+                                                            width: size.width,
+                                                            height: 110,
+                                                            fit: BoxFit.cover)
+                                                        : Image.memory(
+                                                            propController
+                                                                .properties[
+                                                                    index]
+                                                                .houseVisuals![
+                                                                    0]
+                                                                .imageMem,
+                                                            width: size.width,
+                                                            height: 110,
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                   ),
-                                                )
-                                              ]),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                child: DefaultText(
-                                                  text:
-                                                      "${propController.properties[index].amount}/month",
-                                                  color: Colors.orange,
-                                                  weight: FontWeight.bold,
-                                                  size: 15.0,
+                                                  Positioned(
+                                                    top: 5,
+                                                    right: 5,
+                                                    child: Container(
+                                                      width: 40,
+                                                      height: 40,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                      ),
+                                                      child: Obx(
+                                                          () => GestureDetector(
+                                                                onTap: () =>
+                                                                    controller[
+                                                                            index]
+                                                                        .changeFavIcon(),
+                                                                child: controller[
+                                                                        index]
+                                                                    .icon
+                                                                    .value,
+                                                              )),
+                                                    ),
+                                                  )
+                                                ]),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: DefaultText(
+                                                    text:
+                                                        "${propController.properties[index].amount}/month",
+                                                    color: Colors.orange,
+                                                    weight: FontWeight.bold,
+                                                    size: 15.0,
+                                                  ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                child: DefaultText(
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: DefaultText(
+                                                    text: propController
+                                                        .properties[index].name,
+                                                    weight: FontWeight.bold,
+                                                    size: 15.0,
+                                                    align: TextAlign.left,
+                                                  ),
+                                                ),
+                                                DefaultText(
                                                   text: propController
-                                                      .properties[index].name,
+                                                      .properties[index]
+                                                      .address,
                                                   weight: FontWeight.bold,
                                                   size: 15.0,
-                                                  align: TextAlign.left,
                                                 ),
-                                              ),
-                                              DefaultText(
-                                                text: propController
-                                                    .properties[index].address,
-                                                weight: FontWeight.bold,
-                                                size: 15.0,
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      )));
-                        }),
-              ),
+                                        )));
+                          }),
+                ),
+              )
             ],
           ),
         ),

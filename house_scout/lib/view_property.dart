@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:house_scout/controllers/dashboard_controller.dart';
 import 'package:house_scout/controllers/property_view_controller.dart';
+import 'package:house_scout/main.dart';
 import 'package:house_scout/services/remote_services.dart';
 import 'package:house_scout/utils/defaultText.dart';
 
@@ -22,7 +23,7 @@ class ViewProperty extends StatelessWidget {
         body: SingleChildScrollView(
             child: Padding(
           padding: const EdgeInsets.only(
-              top: 10.0, right: 20.0, left: 20.0, bottom: 40.0),
+              top: 10.0, right: 20.0, left: 20.0, bottom: 60.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -92,11 +93,7 @@ class ViewProperty extends StatelessWidget {
                 color: Colors.orange,
                 size: 25,
               ),
-              const DefaultText(
-                text: "2 Bedrooms, 1 Kitchen, 3 Toilets",
-                color: Colors.black87,
-                size: 18,
-              ),
+
               Row(
                 children: [
                   const Icon(
@@ -148,6 +145,113 @@ class ViewProperty extends StatelessWidget {
                 color: Colors.orange,
                 size: 20,
               ),
+              Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.orange, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.bed,
+                          color: Colors.orange,
+                        ),
+                        const SizedBox(width: 30),
+                        DefaultText(
+                          text: "${data['property'].bedroom}",
+                          color: Colors.black87,
+                          size: 18,
+                          weight: FontWeight.bold,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.orange, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.bathtub_outlined,
+                          color: Colors.orange,
+                        ),
+                        const SizedBox(width: 30),
+                        DefaultText(
+                          text: "${data['property'].bathroom}",
+                          color: Colors.black87,
+                          size: 18,
+                          weight: FontWeight.bold,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.orange, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.kitchen_outlined,
+                          color: Colors.orange,
+                        ),
+                        const SizedBox(width: 30),
+                        DefaultText(
+                          text: "${data['property'].kitchen}",
+                          color: Colors.black87,
+                          size: 18,
+                          weight: FontWeight.bold,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20.0),
+
+              Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.orange, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Column(
+                      children: [
+                        const DefaultText(text: "Furnished Type"),
+                        const SizedBox(height: 10),
+                        DefaultText(text: "${data['property'].furnishedType}")
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.orange, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Column(
+                      children: [
+                        const DefaultText(text: "Tenant Type"),
+                        const SizedBox(height: 10),
+                        DefaultText(text: "${data['property'].tenantType}")
+                      ],
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: 20.0),
               const DefaultText(
                 text: "Description",
@@ -158,6 +262,7 @@ class ViewProperty extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 padding: const EdgeInsets.all(10.0),
+                width: size.width,
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.orange, width: 2.0),
                     borderRadius: BorderRadius.circular(10.0)),
@@ -173,7 +278,7 @@ class ViewProperty extends StatelessWidget {
           ),
         )),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: data['property'].user.isLandlord
+        floatingActionButton: sharedPreferences.getBool("is_landlord") == true
             ? FloatingActionButton.extended(
                 onPressed: () {},
                 label: Row(children: [
@@ -241,21 +346,21 @@ class ViewProperty extends StatelessWidget {
                 isExtended: true,
                 onPressed: () {},
                 label: Row(children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed('/favs');
-                    },
-                    child: Column(
-                      children: const [
-                        Icon(Icons.favorite_border, color: Colors.white),
-                        DefaultText(
-                          text: "Favs",
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 20.0),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Get.toNamed('/favs');
+                  //   },
+                  //   child: Column(
+                  //     children: const [
+                  //       Icon(Icons.favorite_border, color: Colors.white),
+                  //       DefaultText(
+                  //         text: "Favs",
+                  //         color: Colors.white,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 20.0),
                   GestureDetector(
                     onTap: () => Get.toNamed('/chat'),
                     child: Column(
@@ -270,7 +375,8 @@ class ViewProperty extends StatelessWidget {
                   ),
                   const SizedBox(width: 20.0),
                   GestureDetector(
-                    onTap: () => Get.toNamed('/ownerProfile'),
+                    onTap: () => Get.toNamed('/ownerProfile',
+                        arguments: {'profile': data['property'].user}),
                     child: Column(
                       children: const [
                         Icon(Icons.person, color: Colors.white),

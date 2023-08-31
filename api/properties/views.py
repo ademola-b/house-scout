@@ -15,6 +15,7 @@ class HouseView(ListCreateAPIView):
 
     def get_queryset(self):
         status = self.kwargs.get('status')
+        owner = self.kwargs.get('owner')
         if not self.request.user.is_authenticated:
             return House.objects.none()
         if self.request.user.is_landlord or self.request.user.is_staff:
@@ -23,10 +24,20 @@ class HouseView(ListCreateAPIView):
                     return self.queryset.filter(user = self.request.user, status = 'available')
                 elif status == 'rented-out':
                     return self.queryset.filter(user = self.request.user, status = 'rented-out')
-                # to write a permission to handle if a wrong choice is provided
+                # to write a permission to handle if a wrong choice is provided               
             else:
+                print("i did")
                 return self.queryset.filter(user = self.request.user)
+       
         elif not self.request.user.is_landlord:
+            if owner:
+                print("i did1")
+                return self.queryset.filter(user__pk = owner)
+            elif status:
+                return self.queryset.none()
+
+            
+            print("i did12")
             return self.queryset.filter(status = 'available')
         
         else:

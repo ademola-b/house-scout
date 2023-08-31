@@ -6,6 +6,9 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
     is_landlord = models.BooleanField(default=False)
+    profile_pix = models.ImageField(upload_to="images/profile_pix", default="images/profile_pix/default.jpg")
+    gender = models.CharField(choices=[("male", "male"), ("female", "female")], null=True, blank=True)
+    address = models.CharField(max_length=1000, null=True, blank=True)
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend

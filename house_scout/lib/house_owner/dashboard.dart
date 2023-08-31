@@ -496,7 +496,7 @@ class Dashboard extends StatelessWidget {
                                         spacing: 20.0,
                                         runSpacing: 20.0,
                                         children: List.generate(
-                                            data.length,
+                                            2,
                                             (index) => GestureDetector(
                                                   onTap: () => Get.toNamed(
                                                       '/viewProperty',

@@ -15,6 +15,14 @@ class House(models.Model):
     desc = models.CharField(max_length=2000, blank=True, null=True)
     amount = models.CharField(max_length=12)
     address = models.CharField(max_length=1000, blank=True, null=True)
+    category = models.CharField(choices=[("rent", "rent"), ("lease", "lease")], default="rent", max_length=7)
+    bedroom = models.IntegerField(default=0)
+    bathroom = models.IntegerField(default=0)
+    kitchen = models.IntegerField(default=0)
+    furnished_type = models.CharField(choices=[("unfurnished", "unfurnished"), ("semi-furnished", "semi-furnished"), ("fully-furnished", "fully-furnished")], default="unfurnished")
+    tenant_type = models.CharField(choices=[("family", "family"), ("bachelor", "bachelor")], default="bachelor")
+
+    
     longitude = models.CharField(max_length = 50, blank=True, null=True)
     latitude = models.CharField(max_length = 50, blank=True, null=True)
     radius = models.CharField(max_length = 3, blank=True, null=True)

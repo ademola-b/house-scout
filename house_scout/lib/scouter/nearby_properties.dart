@@ -34,7 +34,7 @@ class NearbyProperties extends StatelessWidget {
                   ),
                   const SizedBox(width: 50.0),
                   const DefaultText(
-                    text: "Nearby Properties",
+                    text: "Available Properties",
                     size: 20,
                     color: Colors.orange,
                     weight: FontWeight.bold,
@@ -49,6 +49,7 @@ class NearbyProperties extends StatelessWidget {
               ),
               const SizedBox(height: 20.0),
               const SizedBox(
+                height: 40.0,
                 child: DefaultTextFormField(
                   obscureText: false,
                   hintText: "Search for property",

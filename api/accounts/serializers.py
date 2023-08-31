@@ -1,3 +1,6 @@
+import base64
+from django.core.files.storage import default_storage
+
 from allauth.account.adapter import get_adapter
 
 from rest_framework import serializers
@@ -31,6 +34,8 @@ class CustomRegisterSerializer(RegisterSerializer):
         return user
 
 class UserDetailsSerializer(UserDetailsSerializer):
+    imageMem = serializers.SerializerMethodField('image_memory')
+
     class Meta(UserDetailsSerializer.Meta):
         fields = [
             'pk',
@@ -38,6 +43,15 @@ class UserDetailsSerializer(UserDetailsSerializer):
             'email',
             'first_name',
             'last_name',
-            'is_landlord'
+            'is_landlord',
+            'phone',
+            'gender',
+            'address',
+            'imageMem'
         ]
+
+    def image_memory(request, image:CustomUser):
+        if image.profile_pix.name is not None:
+            with default_storage.open(image.profile_pix.name, 'rb') as loadedfile:
+                return base64.b64encode(loadedfile.read())
 
